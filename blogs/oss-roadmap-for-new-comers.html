@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>How to Start Contributing to Open Source - A Guide for Newcomers</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(128, 125, 120, 1);
+	fill: rgba(128, 125, 120, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(204, 121, 47, 1);
+	fill: rgba(204, 121, 47, 1);
+}
+.highlight-yellow {
+	color: rgba(195, 148, 67, 1);
+	fill: rgba(195, 148, 67, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(179, 84, 136, 1);
+	fill: rgba(179, 84, 136, 1);
+}
+.highlight-red {
+	color: rgba(201, 85, 73, 1);
+	fill: rgba(201, 85, 73, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 111, 200, 0.09);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(128, 125, 120, 1);
+	fill: rgba(128, 125, 120, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(204, 121, 47, 1);
+	fill: rgba(204, 121, 47, 1);
+}
+.block-color-yellow {
+	color: rgba(195, 148, 67, 1);
+	fill: rgba(195, 148, 67, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(179, 84, 136, 1);
+	fill: rgba(179, 84, 136, 1);
+}
+.block-color-red {
+	color: rgba(201, 85, 73, 1);
+	fill: rgba(201, 85, 73, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="27414be9-f02f-800c-9adb-d55509ab0981" class="page sans"><header><h1 class="page-title"></h1><p class="page-description"></p></header><div class="page-body"><h1 id="27414be9-f02f-8058-8f36-f851b71d20f0" class="">How to Start Contributing to Open Source - A Mentor’s Friendly Guide for Newcomers</h1><p id="27414be9-f02f-808c-91d0-efc44419199a" class="">Hey - if you’re reading this, you’re already farther than most people who talk about “getting into open source.” I remember being exactly where you are: excited, a little overwhelmed, and unsure where to begin. Here's the thing - open source contributions give you a genuine edge in interviews because they show real collaboration skills and code quality that goes beyond personal projects. In this post I’ll walk you through what open source <em>really</em> means, why it matters, and a practical, step-by-step roadmap you can use today to make your first contribution and build momentum toward bigger programs like Hacktoberfest, Google Summer of Code, or LFX Mentorship.</p><p id="27414be9-f02f-80b3-9ee8-d2d357962079" class="">This is written like I’m sitting next to you with a cup of tea - honest, practical, and full of small, actionable steps.</p><hr id="27414be9-f02f-805c-ac77-c40aee2e5a9c"/><h2 id="27414be9-f02f-80a5-ad5c-e7e2acee2c0d" class="">1. What “open source” really means (and why it matters - beyond “free” code)</h2><p id="27414be9-f02f-8043-b864-e4e23924527e" class="">Open source isn’t just about free code on the internet. At its heart, open source is a <em>way of collaborating</em>.</p><p id="27414be9-f02f-80cc-953a-fba49aca88d7" class="">Think of it as a public garden:</p><ul id="27414be9-f02f-8068-be1d-e0a98bc42bc6" class="bulleted-list"><li style="list-style-type:disc">Anyone can see the plants (the code).</li></ul><ul id="27414be9-f02f-8075-b6b2-f6fd6dfb3e33" class="bulleted-list"><li style="list-style-type:disc">Anyone can plant a seed, prune a branch, or suggest a new flower (features, bug fixes, documentation).</li></ul><ul id="27414be9-f02f-8051-a2bc-f433a2a0cac7" class="bulleted-list"><li style="list-style-type:disc">The gardeners (maintainers) help keep the garden healthy and decide what to grow next.</li></ul><p id="27414be9-f02f-80a4-b0a2-e45d8c7ab057" class="">Why this matters:</p><ul id="27414be9-f02f-803c-b3b6-e1926f207d4f" class="bulleted-list"><li style="list-style-type:disc"><strong>Collective improvement.</strong> Code that’s open gets better because many people with different experiences contribute.</li></ul><ul id="27414be9-f02f-802a-ad7c-ea19be97bf63" class="bulleted-list"><li style="list-style-type:disc"><strong>Learning at scale.</strong> You read real, production code, see how teams solve problems, and get feedback from experienced maintainers.</li></ul><ul id="27414be9-f02f-80e4-be70-f455d4783516" class="bulleted-list"><li style="list-style-type:disc"><strong>Trust &amp; transparency.</strong> You can audit, verify, and reuse libraries with a clear history and discussion about decisions.</li></ul><ul id="27414be9-f02f-8088-9401-d445e6476529" class="bulleted-list"><li style="list-style-type:disc"><strong>Career &amp; reputation.</strong> Contributions demonstrate that you can collaborate, communicate, and deliver - often more persuasive than a CV line.</li></ul><ul id="27414be9-f02f-809a-8a9e-ebf0c3881ddd" class="bulleted-list"><li style="list-style-type:disc"><strong>Impact.</strong> Your small fix could help thousands of users. Open source scales impact.</li></ul><hr id="27414be9-f02f-806d-8be3-df3ad3959ac2"/><h2 id="27414be9-f02f-80fe-ba78-e3a900054df8" class="">2. How beginners can actually start - small, safe, and practical</h2><p id="27414be9-f02f-8066-a51f-fb1153bfe005" class="">You don’t need to rewrite a framework to contribute. Start small, build confidence, and scale up.</p><h3 id="27414be9-f02f-80aa-81f0-d256175b7adc" class="">Beginner-friendly contribution types</h3><ul id="27414be9-f02f-80d5-b999-e8762fb8b015" class="bulleted-list"><li style="list-style-type:disc"><strong>Documentation fixes</strong> (spelling, missing instructions, improving examples)</li></ul><ul id="27414be9-f02f-800c-9225-f5195fa33f66" class="bulleted-list"><li style="list-style-type:disc"><strong>Small bug fixes</strong> (typo in code, small logic bug, incorrect error message)</li></ul><ul id="27414be9-f02f-80a4-b9fa-de2daa295061" class="bulleted-list"><li style="list-style-type:disc"><strong>Tests</strong> (add a unit test to cover an uncovered case)</li></ul><ul id="27414be9-f02f-807a-b834-c00d17c2929c" class="bulleted-list"><li style="list-style-type:disc"><strong>Accessibility and UX</strong> (improve labels, keyboard navigation, alt text)</li></ul><ul id="27414be9-f02f-805c-962a-da849031d911" class="bulleted-list"><li style="list-style-type:disc"><strong>Examples &amp; tutorials</strong> (clearer “getting started” guide)</li></ul><ul id="27414be9-f02f-8020-bc34-f0b4addeea65" class="bulleted-list"><li style="list-style-type:disc"><strong>Repo hygiene</strong> (update license, CI config, README badges)</li></ul><ul id="27414be9-f02f-80c2-91f2-f2ebfd6e9925" class="bulleted-list"><li style="list-style-type:disc"><strong>Translations / i18n</strong></li></ul><ul id="27414be9-f02f-80cd-bef0-efb8e5a38d26" class="bulleted-list"><li style="list-style-type:disc"><strong>Issue triaging</strong> (reproducing bugs, adding reproduction steps, labeling)</li></ul><h3 id="27414be9-f02f-80de-8152-da245ad5196d" class="">Concrete first steps</h3><ol type="1" id="27414be9-f02f-805a-bac0-d2c4c116896e" class="numbered-list" start="1"><li><strong>Set up GitHub:</strong> Create an account, add a good profile picture and a short bio (mention technologies you’re learning).</li></ol><ol type="1" id="27414be9-f02f-807d-b8cc-f35d3474c23d" class="numbered-list" start="2"><li><strong>Follow the “First Contribution” flow</strong><ul id="27414be9-f02f-800f-97d0-daa6b5925b61" class="bulleted-list"><li style="list-style-type:disc">Find a repo labeled <code>good first issue</code>, <code>first-timers-only</code>, <code>help wanted</code>, or <code>easy</code>.</li></ul><ul id="27414be9-f02f-802d-8df0-e236f5067bf2" class="bulleted-list"><li style="list-style-type:disc">Fork → clone → create a branch → make change → push → open a Pull Request.</li></ul></li></ol><ol type="1" id="27414be9-f02f-8051-a389-d1c26b0640a7" class="numbered-list" start="3"><li><strong>Use this simple Git workflow</strong><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27414be9-f02f-80f8-a831-e947e02b7ebe" class="code code-wrap"><code class="language-Bash" style="white-space:pre-wrap;word-break:break-all">git clone &lt;https://github.com/&gt;&lt;you&gt;/&lt;forked-repo&gt;.git
+cd repo
+git checkout -b fix/short-description
+# make changes
+git add .
+git commit -m &quot;docs: fix typo in README&quot;
+git push origin fix/short-description
+# then make a PR on GitHub</code></pre></li></ol><ol type="1" id="27414be9-f02f-800c-af87-ff37dcbb8ccd" class="numbered-list" start="4"><li><strong>Small PR checklist</strong><ul id="27414be9-f02f-8066-9f37-dd5823d1f88c" class="bulleted-list"><li style="list-style-type:disc">Does it build and pass tests locally?</li></ul><ul id="27414be9-f02f-8010-8996-ee739aac35b2" class="bulleted-list"><li style="list-style-type:disc">Is the change atomic and titled clearly?</li></ul><ul id="27414be9-f02f-8021-adeb-d7fc0c83896f" class="bulleted-list"><li style="list-style-type:disc">Did you write a short description of what you changed and why?</li></ul><ul id="27414be9-f02f-80b4-9e40-e249c4fd78a3" class="bulleted-list"><li style="list-style-type:disc">Did you link the issue (if any)?</li></ul></li></ol><h3 id="27414be9-f02f-805f-8de4-ffd79fa985a6" class="">Sample PR description template</h3><blockquote id="27414be9-f02f-8028-ab0f-f14bbae0b0f6" class="">Summary: One-line description of the change.<br/>Why: Why this change? (bugfix, docs clarity, etc.)<br/>How tested: Commands or steps you ran.<br/>Related issue: #123 (if relevant)</blockquote><p id="27414be9-f02f-8088-882f-d7d1c77cf266" class="">This tiny, predictable routine will remove decision friction and keep you moving.</p><hr id="27414be9-f02f-80b3-9b07-c0bb2e0ff08a"/><h2 id="27414be9-f02f-8014-9c59-f2bc82231bb0" class="">3. Entry programs: Hacktoberfest → GSoC → LFX Mentorship (how they work and how to prepare)</h2><p id="27414be9-f02f-80c0-af41-ce3c916941ad" class="">Before we dive in, here are the official links and a quick “year at a glance.” Dates vary every year - always check the current timeline.</p><ul id="27414be9-f02f-80c3-8e65-f7171a3a0d02" class="bulleted-list"><li style="list-style-type:disc">Official links</li></ul><ul id="27414be9-f02f-80f7-a6e0-f93a1c28991e" class="bulleted-list"><li style="list-style-type:disc">Hacktoberfest: <a href="https://hacktoberfest.com/">https://hacktoberfest.com</a></li></ul><ul id="27414be9-f02f-8039-8131-cffc052e4617" class="bulleted-list"><li style="list-style-type:disc">Google Summer of Code (GSoC): <a href="https://summerofcode.withgoogle.com/">https://summerofcode.withgoogle.com</a> (short: <a href="https://g.co/gsoc">https://g.co/gsoc</a>)</li></ul><ul id="27414be9-f02f-805a-b799-cee236e0a1bb" class="bulleted-list"><li style="list-style-type:disc">LFX Mentorship: <a href="https://lfx.linuxfoundation.org/tools/mentorship/">https://lfx.linuxfoundation.org/tools/mentorship/</a> (projects portal: <a href="https://mentorship.lfx.linuxfoundation.org/">https://mentorship.lfx.linuxfoundation.org</a>)</li></ul><ul id="27414be9-f02f-80e4-a992-cfdad20f8023" class="bulleted-list"><li style="list-style-type:disc">Typical timeline (approximate, check the official pages each year)</li></ul><ul id="27414be9-f02f-80cc-848d-e63f08acf8f6" class="bulleted-list"><li style="list-style-type:disc">Jan–Feb: LFX Spring applications open; many orgs start publishing GSoC ideas.</li></ul><ul id="27414be9-f02f-8043-a19c-fe3f4e41e777" class="bulleted-list"><li style="list-style-type:disc">Feb–Mar: GSoC orgs announced; start chatting with potential mentors.</li></ul><ul id="27414be9-f02f-80b4-84e8-e98c30854c0f" class="bulleted-list"><li style="list-style-type:disc">Mar–Apr: GSoC contributor applications due (proposal window).</li></ul><ul id="27414be9-f02f-80ef-9954-f32a9e6cad49" class="bulleted-list"><li style="list-style-type:disc">May: GSoC selections announced; community-bonding period begins. LFX Spring cohort often runs around now.</li></ul><ul id="27414be9-f02f-80a6-ab8c-e7978c6e1479" class="bulleted-list"><li style="list-style-type:disc">May–Sep: GSoC coding period (12+ weeks with flexible schedules depending on the year).</li></ul><ul id="27414be9-f02f-80b0-b7e1-fdd2e65597a3" class="bulleted-list"><li style="list-style-type:disc">Jun–Aug: LFX Summer cohort (applications shortly before; ~12 weeks).</li></ul><ul id="27414be9-f02f-8057-860a-cce7971708f1" class="bulleted-list"><li style="list-style-type:disc">Aug–Sep: LFX Fall applications open.</li></ul><ul id="27414be9-f02f-80b0-8528-d4498fdff3d6" class="bulleted-list"><li style="list-style-type:disc">Oct (Oct 1–31): Hacktoberfest month. Register in late Sep/early Oct; contribute throughout October.</li></ul><ul id="27414be9-f02f-80a4-b6aa-e46fcceccb3c" class="bulleted-list"><li style="list-style-type:disc">Oct–Dec: LFX Fall cohort.</li></ul><p id="27414be9-f02f-8059-a22a-e84aa0e6983d" class="">Keep this mental picture, and you’ll know what to prep for each season.</p><h3 id="27414be9-f02f-807a-9eda-d9c24232d4fa" class="">Hacktoberfest - a beginner-friendly entry point</h3><ul id="27414be9-f02f-80c1-84cd-e45a70157147" class="bulleted-list"><li style="list-style-type:disc">What it is: A month-long event every October that encourages meaningful contributions across the open-source ecosystem. Official site: <a href="https://hacktoberfest.com/">https://hacktoberfest.com</a></li></ul><ul id="27414be9-f02f-8052-ac03-d533a20289ff" class="bulleted-list"><li style="list-style-type:disc">Why join: Low-stakes, high-energy, perfect for your first PR and for learning the contribution workflow.</li></ul><ul id="27414be9-f02f-80d7-bbca-cb110da34852" class="bulleted-list"><li style="list-style-type:disc">Typical timeline:</li></ul><ul id="27414be9-f02f-808a-bc40-d3860ece3f59" class="bulleted-list"><li style="list-style-type:disc">Late Sep: Registration opens (you must register for your PRs to count).</li></ul><ul id="27414be9-f02f-80dc-9192-c2d146c47431" class="bulleted-list"><li style="list-style-type:disc">Oct 1–31: The event runs. Aim for quality PRs (maintainers can mark spam).</li></ul><ul id="27414be9-f02f-8062-b7d4-d819cc516073" class="bulleted-list"><li style="list-style-type:disc">How to prepare: Practice small PRs in Aug/Sep so October feels smooth. Start with docs and tiny fixes for fast feedback.</li></ul><ul id="27414be9-f02f-80d2-b06b-fdacf5c7ce46" class="bulleted-list"><li style="list-style-type:disc">Tips for success: Read each repo’s contributing guide, pick tagged issues (<code>hacktoberfest</code>, <code>good first issue</code>), and write clear PR descriptions.</li></ul><h3 id="27414be9-f02f-8082-aae7-e2764d2714c7" class="">Google Summer of Code (GSoC) - a structured learning program</h3><ul id="27414be9-f02f-80ca-8a0e-d89f609d5839" class="bulleted-list"><li style="list-style-type:disc">What it is: A paid, mentored program pairing contributors (18+) with open-source orgs to complete scoped projects. Official site: <a href="https://summerofcode.withgoogle.com/">https://summerofcode.withgoogle.com</a></li></ul><ul id="27414be9-f02f-8078-a91d-ea78e78c70ed" class="bulleted-list"><li style="list-style-type:disc">Why it helps: Mentored experience, clear milestones, and a serious project on your resume.</li></ul><ul id="27414be9-f02f-80be-acbc-f68b5aeeadac" class="bulleted-list"><li style="list-style-type:disc">Typical timeline (varies yearly; see the official “Timeline” page on the site):</li></ul><ul id="27414be9-f02f-8055-b3af-f217b0c075c8" class="bulleted-list"><li style="list-style-type:disc">Feb–Mar: List of participating orgs published.</li></ul><ul id="27414be9-f02f-80d0-bede-e248425a003e" class="bulleted-list"><li style="list-style-type:disc">Mar–Apr: Proposal/application period for contributors.</li></ul><ul id="27414be9-f02f-80c2-a27f-ffa97c92f2f5" class="bulleted-list"><li style="list-style-type:disc">May: Accepted contributors announced; community bonding begins.</li></ul><ul id="27414be9-f02f-8080-a603-d6c4e2a5897c" class="bulleted-list"><li style="list-style-type:disc">May–Aug/Sep: Coding period (12+ weeks; schedule may be flexible).</li></ul><ul id="27414be9-f02f-8040-a83c-c076946bf30e" class="bulleted-list"><li style="list-style-type:disc">Aug/Sep: Final evaluations.</li></ul><ul id="27414be9-f02f-8059-b91d-dc1b4a755d7e" class="bulleted-list"><li style="list-style-type:disc">Prep playbook: Contribute to your target org months in advance, join their chat, discuss ideas with potential mentors, and base your proposal on an org-approved idea (or a well-socialized new one). Read past successful proposals. Pro tip: <a href="https://www.gsocorganizations.dev/">https://www.gsocorganizations.dev/</a> is a super convenient way to discover participating orgs and browse their project ideas from previous years.</li></ul><ul id="27414be9-f02f-80b5-8728-d800bd69f552" class="bulleted-list"><li style="list-style-type:disc">Quick facts: Since 2022, GSoC is open to more than just students (age 18+). Exact dates change every year - check the site.</li></ul><h3 id="27414be9-f02f-809d-b49f-c5fb5455453c" class="">LFX Mentorship (and similar org mentorships)</h3><ul id="27414be9-f02f-8047-b0ac-f1ff5ef80f80" class="bulleted-list"><li style="list-style-type:disc">What it is: Linux Foundation’s mentorship program connecting contributors with maintainers across many CNCF/LF projects. Overview: <a href="https://lfx.linuxfoundation.org/tools/mentorship/">https://lfx.linuxfoundation.org/tools/mentorship/</a> - Projects/applications: <a href="https://mentorship.lfx.linuxfoundation.org/">https://mentorship.lfx.linuxfoundation.org</a></li></ul><ul id="27414be9-f02f-80f3-812b-e2e05f48059f" class="bulleted-list"><li style="list-style-type:disc">Why it helps: Structured mentorship, real-world deliverables, and exposure to industry-grade projects and processes.</li></ul><ul id="27414be9-f02f-801a-9867-e33272e089d1" class="bulleted-list"><li style="list-style-type:disc">Typical cohorts (approximate):</li></ul><ul id="27414be9-f02f-80f2-a537-f66c27dd41bb" class="bulleted-list"><li style="list-style-type:disc">Spring: ~Mar–May (applications open ~Jan–Feb)</li></ul><ul id="27414be9-f02f-8016-a491-e3331d614863" class="bulleted-list"><li style="list-style-type:disc">Summer: ~Jun–Aug (applications open ~May)</li></ul><ul id="27414be9-f02f-80a2-9ebc-c84695049ceb" class="bulleted-list"><li style="list-style-type:disc">Fall: ~Sep–Nov (applications open ~Aug)<br/>Each cohort is usually ~12 weeks; stipends vary by project/region.</li></ul><ul id="27414be9-f02f-8085-86e6-f352b2e2a695" class="bulleted-list"><li style="list-style-type:disc">How to prepare: Watch the portal for new projects, reach out early, show prior small contributions, and include clear milestones in your application.</li></ul><hr id="27414be9-f02f-8067-8315-ff79c20f5f15"/><h2 id="27414be9-f02f-807f-a71f-c20bf84d2eb1" class="">4. Skills you should learn - practical, prioritized, and where they matter</h2><p id="27414be9-f02f-8077-a91f-d87835d06eef" class="">You don’t need to be a polyglot. Pick a stack and gradually expand. Here are the high-leverage skills:</p><h3 id="27414be9-f02f-8057-a4ee-f45b1c383a61" class="">Core (must-have)</h3><ul id="27414be9-f02f-8073-969d-d5ce407a11d7" class="bulleted-list"><li style="list-style-type:disc"><strong>Git &amp; GitHub basics</strong><ul id="27414be9-f02f-80cb-8b81-f3be19369a36" class="bulleted-list"><li style="list-style-type:circle">Branching, commits, pushes, pull requests, rebasing (basics).</li></ul><ul id="27414be9-f02f-8010-abc5-f5c1f968e772" class="bulleted-list"><li style="list-style-type:circle">How to resolve a merge conflict.</li></ul><ul id="27414be9-f02f-8069-b4ba-d4eba2d57ee4" class="bulleted-list"><li style="list-style-type:circle">Reading commit history and using <code>git blame</code>.</li></ul></li></ul><ul id="27414be9-f02f-80fb-8766-cd921e2f6dd3" class="bulleted-list"><li style="list-style-type:disc"><strong>Communicating on issues / PRs</strong><ul id="27414be9-f02f-804a-b6b4-d9a847427bb2" class="bulleted-list"><li style="list-style-type:circle">Writing clear issue descriptions, reproduction steps, and PR descriptions.</li></ul><ul id="27414be9-f02f-8043-ace1-e00c3e3c752f" class="bulleted-list"><li style="list-style-type:circle">Being polite, concise, and responsive in review conversations.</li></ul></li></ul><ul id="27414be9-f02f-8002-9878-e01f388009ca" class="bulleted-list"><li style="list-style-type:disc"><strong>Reading other people’s code</strong><ul id="27414be9-f02f-8058-93d2-d21b662bcf8c" class="bulleted-list"><li style="list-style-type:circle">Learn to search across a repo, follow call graphs, and find tests.</li></ul></li></ul><h3 id="27414be9-f02f-8042-8dfc-df8dce1032a2" class="">Languages that help you broadly</h3><ul id="27414be9-f02f-8050-8068-eb49a50a5133" class="bulleted-list"><li style="list-style-type:disc"><strong>TypeScript / JavaScript</strong> - frontend libraries, many OSS projects.</li></ul><ul id="27414be9-f02f-8050-9a3b-efabce1ee0c5" class="bulleted-list"><li style="list-style-type:disc"><strong>Python</strong> - scripts, tools, machine learning, infra utilities.</li></ul><h3 id="27414be9-f02f-80fa-84b3-cfb3a76d1e00" class="">Niche but valuable skills (examples and where they matter)</h3><ul id="27414be9-f02f-801a-b9b6-eb48bafe69f1" class="bulleted-list"><li style="list-style-type:disc"><strong>Rust</strong> - systems programming, high-performance tools, CLI apps.</li></ul><ul id="27414be9-f02f-8059-9f77-cf53e293602e" class="bulleted-list"><li style="list-style-type:disc"><strong>Go</strong> - cloud infra, microservices, tooling (e.g., Kubernetes ecosystem).</li></ul><ul id="27414be9-f02f-8069-9e07-e48c3e38ec1c" class="bulleted-list"><li style="list-style-type:disc"><strong>Accessibility (a11y)</strong> - hugely impactful for web projects, little competition.</li></ul><ul id="27414be9-f02f-80d1-bc40-e61bab75ec17" class="bulleted-list"><li style="list-style-type:disc"><strong>Testing and TDD</strong> - adds credibility to your PRs - many maintainers will prefer a PR that has tests.</li></ul><ul id="27414be9-f02f-80d6-988c-d292aa5284c3" class="bulleted-list"><li style="list-style-type:disc"><strong>CI/CD familiarity</strong> (GitHub Actions, Travis) - fixes in CI configs are very welcome.</li></ul><ul id="27414be9-f02f-805d-a896-d0d9f374855b" class="bulleted-list"><li style="list-style-type:disc"><strong>Docker / Containers</strong> - useful for reproducible environments and developer tooling.</li></ul><ul id="27414be9-f02f-80f5-9a02-e5df6fca3dda" class="bulleted-list"><li style="list-style-type:disc"><strong>i18n / localization</strong> - great for community-driven projects needing translations.</li></ul><ul id="27414be9-f02f-8029-a622-e8fdb1120d22" class="bulleted-list"><li style="list-style-type:disc"><strong>Security basics</strong> - dependency scanning, SBOM, simple vulnerability fixes.</li></ul><hr id="27414be9-f02f-80ed-a87b-de6b3e1e97d6"/><h2 id="27414be9-f02f-805f-9efe-fca4a854e148" class="">5. Common beginner fears - and how to overcome them</h2><p id="27414be9-f02f-8059-9507-c263050b0517" class="">You’re not alone - everyone has these feelings. Here’s how to tackle each one.</p><h3 id="27414be9-f02f-8024-b155-efc329fdd4db" class="">“I’m an imposter” / “I’m not good enough”</h3><ul id="27414be9-f02f-8036-aa29-dc66f65d29db" class="bulleted-list"><li style="list-style-type:disc"><strong>Reality check:</strong> Maintainers expect beginners. That’s why they tag issues <code>good first issue</code>.</li></ul><ul id="27414be9-f02f-8072-8fd8-c17364973fa2" class="bulleted-list"><li style="list-style-type:disc"><strong>Practical fix:</strong> Start with tiny wins - docs or a single failing unit test. Stack small wins and your confidence grows.</li></ul><h3 id="27414be9-f02f-80d5-8377-f8a7c68de1e7" class="">“I’ll break something”</h3><ul id="27414be9-f02f-807d-b770-f3feffa2786f" class="bulleted-list"><li style="list-style-type:disc"><strong>Reality check:</strong> Repos use branches, tests, and code review. Your PR won’t auto-break master if maintainers do their job.</li></ul><ul id="27414be9-f02f-804b-8299-eaba7cfa9854" class="bulleted-list"><li style="list-style-type:disc"><strong>Practical fix:</strong> Run tests locally, open small PRs with a clear scope. If worried, state in the PR that you’re new and ask for a sanity check.</li></ul><h3 id="27414be9-f02f-8062-85c2-e44ea2c4f2fa" class="">“I don’t know how to talk to maintainers”</h3><ul id="27414be9-f02f-801f-b345-cf653e15c17a" class="bulleted-list"><li style="list-style-type:disc"><strong>Reality check:</strong> Most maintainers appreciate polite, concise communication.</li></ul><ul id="27414be9-f02f-80df-a430-c6857bfe34f1" class="bulleted-list"><li style="list-style-type:disc"><strong>Practical fix:</strong> Use this template when commenting:<blockquote id="27414be9-f02f-80f0-8bea-e209058ccb32" class="">Hi - I’m interested in working on this. I can reproduce the issue by… I plan to fix it by… Are there any constraints I should be aware of?</blockquote></li></ul><ul id="27414be9-f02f-809f-8705-fe807b1efcab" class="bulleted-list"><li style="list-style-type:disc">Be grateful and patient. Maintainers are often volunteers.</li></ul><h3 id="27414be9-f02f-803c-8fe6-f49e0baf5673" class="">“I don’t have time”</h3><ul id="27414be9-f02f-807e-bcf2-dd0597593c51" class="bulleted-list"><li style="list-style-type:disc"><strong>Reality check:</strong> Small, consistent contributions win. 30–60 minutes a few times a week is enough to build momentum.</li></ul><ul id="27414be9-f02f-802e-ad79-e408851c8b87" class="bulleted-list"><li style="list-style-type:disc"><strong>Practical fix:</strong> Schedule a weekly “open source hour” in your calendar.</li></ul><hr id="27414be9-f02f-80b8-a309-e932002a534b"/><h2 id="27414be9-f02f-8046-8725-e93b0e5115f5" class="">6. Building a contribution roadmap - a simple, repeatable plan</h2><p id="27414be9-f02f-8055-b252-f7e2e325b985" class="">Treat contributions like learning a language: immersion + routine.</p><h3 id="27414be9-f02f-80a2-9ab4-fe29e4f2d7ec" class="">Phase 0 - Setup (1–3 days)</h3><ul id="27414be9-f02f-8008-9787-c7f684a017c7" class="bulleted-list"><li style="list-style-type:disc">Create GitHub, set up SSH keys, customize your profile.</li></ul><ul id="27414be9-f02f-801c-8e6c-f87636ba8a0f" class="bulleted-list"><li style="list-style-type:disc">Install Git, a code editor, and a terminal you like.</li></ul><ul id="27414be9-f02f-8099-a883-f389d77fcd9b" class="bulleted-list"><li style="list-style-type:disc">Learn basic git commands listed above.</li></ul><h3 id="27414be9-f02f-8085-8908-e916d1d8ba0b" class="">Phase 1 - Confidence via docs (1–3 weeks)</h3><ul id="27414be9-f02f-809e-b7ee-fc12bd546e21" class="bulleted-list"><li style="list-style-type:disc">Find 2–3 repos with <code>good first issue</code> or <code>docs</code> labels.</li></ul><ul id="27414be9-f02f-8090-8cfc-eeaab8126a22" class="bulleted-list"><li style="list-style-type:disc">Make 5 small doc fixes across different projects. Each PR should follow the checklist.</li></ul><h3 id="27414be9-f02f-80db-bd7a-fea54c8edbab" class="">Phase 2 - Small code contributions (1–2 months)</h3><ul id="27414be9-f02f-80cb-b055-ced96eee969e" class="bulleted-list"><li style="list-style-type:disc">Tackle small bugs. Prefer ones with clear reproduction steps.</li></ul><ul id="27414be9-f02f-8071-8a20-e00d06035681" class="bulleted-list"><li style="list-style-type:disc">Add or improve tests.</li></ul><ul id="27414be9-f02f-8044-a244-cf7a1f06946e" class="bulleted-list"><li style="list-style-type:disc">Pair up with a friend or join a community call for pair-programming.</li></ul><h3 id="27414be9-f02f-80fe-a73d-d8c9644b92a2" class="">Phase 3 - Larger features &amp; mentorship programs (3–12 months)</h3><ul id="27414be9-f02f-802b-8846-d2a346876327" class="bulleted-list"><li style="list-style-type:disc">Pick a project you enjoy and make regular contributions.</li></ul><ul id="27414be9-f02f-804b-9da0-d20dde42acd2" class="bulleted-list"><li style="list-style-type:disc">Start interacting with maintainers: ask for small features you can own.</li></ul><ul id="27414be9-f02f-80e4-9fe0-ccb0bae8a84a" class="bulleted-list"><li style="list-style-type:disc">After 3–6 months of steady work, consider applying for GSoC, LFX, or taking part in Hacktoberfest as a contributor and mentor.</li></ul><h3 id="27414be9-f02f-80c8-938d-ed5610ddca0b" class="">How to pick projects</h3><ul id="27414be9-f02f-8075-bedd-c13982d0de1f" class="bulleted-list"><li style="list-style-type:disc"><strong>Interest:</strong> Work on tools or domains that excite you.</li></ul><ul id="27414be9-f02f-80c4-b965-ce7b6d948720" class="bulleted-list"><li style="list-style-type:disc"><strong>Activity:</strong> Check recent commits and issue activity (not dead).</li></ul><ul id="27414be9-f02f-80d5-969c-fdfe3f494a8c" class="bulleted-list"><li style="list-style-type:disc"><strong>Welcoming:</strong> Look for <code>CONTRIBUTING.md</code>, <code>CODE_OF_CONDUCT</code>, and issue labels for beginners.</li></ul><ul id="27414be9-f02f-802d-b754-fff384069a46" class="bulleted-list"><li style="list-style-type:disc"><strong>Size &amp; scope:</strong> Prefer mid-size projects with friendly maintainers over massive projects that are hard to understand.</li></ul><h3 id="27414be9-f02f-80fc-aaad-c14077229281" class="">How to understand a new codebase</h3><ul id="27414be9-f02f-80ef-bd8f-fcec2885f03c" class="bulleted-list"><li style="list-style-type:disc">Start with the README and <a href="http://contributing.md/">CONTRIBUTING.md</a>.</li></ul><ul id="27414be9-f02f-8043-82fa-fa617f4db28e" class="bulleted-list"><li style="list-style-type:disc">Find the “getting started” or “developer setup” guide and follow it.</li></ul><ul id="27414be9-f02f-80df-8d45-eeb27ca0f2ca" class="bulleted-list"><li style="list-style-type:disc">Run the test suite - it often reveals usage patterns.</li></ul><ul id="27414be9-f02f-80c9-a90c-d31a22784ba3" class="bulleted-list"><li style="list-style-type:disc">Search for a small module and read code top-to-bottom.</li></ul><ul id="27414be9-f02f-80b9-ba39-f2b0b2d83357" class="bulleted-list"><li style="list-style-type:disc">Leave yourself notes: “module X controls Y” - these help you remember.</li></ul><h3 id="27414be9-f02f-80bc-bebd-c3f93062b8ef" class="">Interacting with maintainers</h3><ul id="27414be9-f02f-80f5-b4c7-cc8e41773623" class="bulleted-list"><li style="list-style-type:disc">Be respectful and concise.</li></ul><ul id="27414be9-f02f-80e1-b9db-e9279f21893d" class="bulleted-list"><li style="list-style-type:disc">Ask for clarification <strong>before</strong> opening a big PR if unsure.</li></ul><ul id="27414be9-f02f-80f0-be41-f830050fa5bf" class="bulleted-list"><li style="list-style-type:disc">If a maintainer asks for changes, don’t be defensive - ask questions and iterate.</li></ul><hr id="27414be9-f02f-80cd-a78d-d76584afefa1"/><h2 id="27414be9-f02f-80b3-93be-dc06ae94e824" class="">7. Practical next steps you can do right now (actionable checklist)</h2><ol type="1" id="27414be9-f02f-8022-8617-c29669b496d8" class="numbered-list" start="1"><li><strong>Set up GitHub</strong> (if you don’t have an account).</li></ol><ol type="1" id="27414be9-f02f-8019-a2b5-ea813550abef" class="numbered-list" start="2"><li><strong>Follow this 7-step starter routine:</strong><ul id="27414be9-f02f-808a-942c-c850e7f2e39d" class="bulleted-list"><li style="list-style-type:disc">Find a <code>good first issue</code> repo.</li></ul><ul id="27414be9-f02f-803e-b660-ee901989de72" class="bulleted-list"><li style="list-style-type:disc">Fork the repo.</li></ul><ul id="27414be9-f02f-807e-ac4f-d29a3f1c4bbe" class="bulleted-list"><li style="list-style-type:disc">Clone locally and install dev dependencies.</li></ul><ul id="27414be9-f02f-8042-92ab-ddb29e43ca7e" class="bulleted-list"><li style="list-style-type:disc">Run the tests.</li></ul><ul id="27414be9-f02f-80dc-9f1b-dd107d441fc9" class="bulleted-list"><li style="list-style-type:disc">Make a tiny fix (docs or a small bug).</li></ul><ul id="27414be9-f02f-803d-a546-c5c1f190c859" class="bulleted-list"><li style="list-style-type:disc">Commit, push, and open your PR.</li></ul><ul id="27414be9-f02f-809d-a984-f8feed345488" class="bulleted-list"><li style="list-style-type:disc">Leave a friendly PR description and link the related issue.</li></ul></li></ol><ol type="1" id="27414be9-f02f-80e6-9e3d-d638f72f42e2" class="numbered-list" start="3"><li><strong>Join one community chat</strong> (Discord, Matrix, Slack, or GitHub Discussions) for a project you like.</li></ol><ol type="1" id="27414be9-f02f-8045-a387-c2d0da08f4ef" class="numbered-list" start="4"><li><strong>Schedule 1 hour this week</strong> to complete your first PR.</li></ol><ol type="1" id="27414be9-f02f-802e-a454-d3750cb93572" class="numbered-list" start="5"><li><strong>Bookmark</strong> resources like “First Contributions” and <code>good first issue</code> search (GitHub Explore).</li></ol><ol type="1" id="27414be9-f02f-8092-abc4-cdb372fcf8fd" class="numbered-list" start="6"><li><strong>After your first PR is merged</strong>, pick a slightly more challenging issue and repeat.</li></ol><hr id="27414be9-f02f-80cf-adf6-f1cd05f3dc3d"/><h2 id="27414be9-f02f-803d-ba66-e1e1c846005d" class="">8. Real-world mini-examples &amp; metaphors that stick</h2><ul id="27414be9-f02f-8020-a30e-ccb519318fb3" class="bulleted-list"><li style="list-style-type:disc"><strong>Metaphor - “The patchwork quilt”</strong>: Each small PR is a single patch. Over time the quilt (project) gets beautiful and warm because many people contributed small pieces.</li></ul><ul id="27414be9-f02f-803c-af3c-dd5f837ae245" class="bulleted-list"><li style="list-style-type:disc"><strong>Example - Documentation PR</strong>: You open a library, follow “Getting Started”, find a missing step. You fix the README, open a PR. Maintainer thanks you - you get your first merged PR.</li></ul><ul id="27414be9-f02f-80dd-92a7-ddc7cc850ceb" class="bulleted-list"><li style="list-style-type:disc"><strong>Example - Fixing a failing test</strong>: You run <code>npm test</code>, a test fails because of a timezone edge case. You run locally, add a guard, update the test, and open a PR with <code>test: fix timezone edge case</code>. Now CI passes - satisfying!</li></ul><hr id="27414be9-f02f-8090-b6d1-f08e7a012e57"/><h3 id="27414be9-f02f-80f7-91d7-d46d931ffc31" class="">Short PR title patterns</h3><ul id="27414be9-f02f-8048-ac26-cfa99a4f9707" class="bulleted-list"><li style="list-style-type:disc"><code>docs: clarify installation steps</code></li></ul><ul id="27414be9-f02f-8013-a39b-eae5a74112a1" class="bulleted-list"><li style="list-style-type:disc"><code>fix: prevent crash when input is null</code></li></ul><ul id="27414be9-f02f-8049-93c9-d088a76d4549" class="bulleted-list"><li style="list-style-type:disc"><code>feat: add --quiet flag to CLI</code></li></ul><ul id="27414be9-f02f-80a8-ad88-c26372fd1a1b" class="bulleted-list"><li style="list-style-type:disc"><code>test: add unit test for user login</code></li></ul><h3 id="27414be9-f02f-80fb-a415-e724c16c1444" class="">Short polite message to open on an issue before starting</h3><blockquote id="27414be9-f02f-80c3-8b59-edb80f9b1ef5" class="">Hi - I’d like to work on this. I can reproduce the issue using the steps in the description and plan to fix it by changing module X to handle case Y. Does that sound good?</blockquote><hr id="27414be9-f02f-80fd-8b03-febbdf28f4a4"/><h2 id="27414be9-f02f-806c-bd02-e34e195186cc" class="">9. Keeping consistency &amp; not burning out</h2><ul id="27414be9-f02f-80d2-8c1e-dd45da765ba9" class="bulleted-list"><li style="list-style-type:disc"><strong>Small, regular practice</strong> beats occasional sprints. 30 minutes × 3 days/week is sustainable.</li></ul><ul id="27414be9-f02f-80e6-8f30-c68a291f7c47" class="bulleted-list"><li style="list-style-type:disc"><strong>Celebrate micro-wins.</strong> Merged PRs, helpful review comments, and even closing an issue are meaningful.</li></ul><ul id="27414be9-f02f-809b-b53b-f43f3f482111" class="bulleted-list"><li style="list-style-type:disc"><strong>Rotate tasks.</strong> If you get tired of code, do docs, tests, or community triage for a bit.</li></ul><ul id="27414be9-f02f-80a1-a6be-cfa96136dd56" class="bulleted-list"><li style="list-style-type:disc"><strong>Ask for help early.</strong> If you’re blocked more than a day, ask in the project chat or open a draft PR.</li></ul><hr id="27414be9-f02f-80fa-b998-f4508d6cb456"/><h2 id="27414be9-f02f-8033-a2ad-c8a0868f0bdc" class="">10. Community etiquette - be human first</h2><ul id="27414be9-f02f-8087-b65d-fdfc7248cf68" class="bulleted-list"><li style="list-style-type:disc">Always be <strong>polite</strong> and <strong>grateful</strong>. Open source maintainers often volunteer their time.</li></ul><ul id="27414be9-f02f-80e3-8e03-c7beb621c7c5" class="bulleted-list"><li style="list-style-type:disc">Use <code>@maintainer</code> sparingly; prefer discussion threads.</li></ul><ul id="27414be9-f02f-800a-a8c6-cde0454d70ed" class="bulleted-list"><li style="list-style-type:disc">Read the project’s code of conduct and follow it.</li></ul><ul id="27414be9-f02f-8009-9cc5-c6737d011395" class="bulleted-list"><li style="list-style-type:disc">When submitting a change, explain context, not just code diffs.</li></ul><ul id="27414be9-f02f-8027-a456-c4a9997e0187" class="bulleted-list"><li style="list-style-type:disc">If you disagree, argue about <em>ideas</em>, not people. Be curious, not confrontational.</li></ul><hr id="27414be9-f02f-80b1-8b93-d02789727424"/><h2 id="27414be9-f02f-8025-ae0b-f4c83fd16448" class="">11. Long-term mindset: it’s not a sprint, it’s an apprenticeship</h2><p id="27414be9-f02f-80fc-9767-c19ca5b1996d" class="">Open source is the slow-burn way to build expertise. You’ll learn:</p><ul id="27414be9-f02f-80b3-b10f-e4cfbcfc3a72" class="bulleted-list"><li style="list-style-type:disc">How large teams design systems.</li></ul><ul id="27414be9-f02f-80da-a2a0-feb5289081f6" class="bulleted-list"><li style="list-style-type:disc">How to write maintainable code.</li></ul><ul id="27414be9-f02f-80d5-8ec0-e771363fe593" class="bulleted-list"><li style="list-style-type:disc">How to communicate tradeoffs and make decisions with others.</li></ul><p id="27414be9-f02f-80d6-a425-e8a454fc0769" class="">A few months of steady contributions will change how you code, test, and think about product quality.</p><hr id="27414be9-f02f-8061-b4a7-d5163efbabd2"/><h2 id="27414be9-f02f-8082-a9bf-dbcc72da0bab" class="">Final pep talk - take one small step today</h2><p id="27414be9-f02f-8022-8316-c3838a906d56" class="">Alright - one last practical nudge: pick <strong>one</strong> item from this mini plan and do it right now.</p><ol type="1" id="27414be9-f02f-80f0-bff3-c4d9da009d14" class="numbered-list" start="1"><li>Create your GitHub account (if you don’t have one).</li></ol><ol type="1" id="27414be9-f02f-80a2-8612-e4706526e2de" class="numbered-list" start="2"><li>Or find a repo with <code>good first issue</code>.</li></ol><ol type="1" id="27414be9-f02f-8098-9c50-e9e37b625118" class="numbered-list" start="3"><li>Or open a README and find one typo to fix.</li></ol><p id="27414be9-f02f-80d8-a21d-f58215d28b95" class="">That first tiny pull request is the most important milestone. It’s the bridge from “I want to contribute” to “I am a contributor.” It will feel awkward at first - and then entirely ordinary. You’ll get reviews, you’ll learn, you’ll iterate, and you’ll start to feel like you belong.</p><p id="27414be9-f02f-8015-94bf-de6ea6251682" class="">If you want, paste the URL of the repo you’re thinking of contributing to and I’ll give you a 5-point checklist tailored to that repo (like “start here”, “run this test”, “pick that issue”). Let’s make your first PR together.</p><p id="27414be9-f02f-805e-b534-fe327f870f9b" class="">Go make that tiny change. The open source garden is waiting - and there’s a patch with your name on it. 🌱✨</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
