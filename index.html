@@ -83,27 +83,61 @@
 				</p>
 			</section>
 
-					<section class="blogs">
-						<h2>Blogs</h2>
-						{% assign list_count = 0 %}
-						<ul class="blog-list">
-							{% for f in site.static_files %}
-								{% if f.extname == ".html" and f.path contains '/blogs/' %}
-									{% assign title = f.name | split: '.' | first | replace: '-', ' ' | replace: '_', ' ' | capitalize %}
-									<li>
-										<a href="{{ f.path | relative_url }}">
-											<span>{{ title }}</span>
-											<span class="fname">({{ f.name }})</span>
-										</a>
-									</li>
-									{% assign list_count = list_count | plus: 1 %}
-								{% endif %}
-							{% endfor %}
-						</ul>
-						{% if list_count == 0 %}
-							<p class="about">No blogs yet. Add .html files inside the <code>blogs/</code> folder.</p>
-						{% endif %}
-					</section>
+							<section class="blogs">
+								<h2>Blogs</h2>
+								<ul class="blog-list" id="blog-list"></ul>
+								<p class="about" id="blog-placeholder">Loading…</p>
+							</section>
+
+									<script>
+										// Populate the blog list using the GitHub API so it works even without Jekyll.
+										(function () {
+											const ul = document.getElementById('blog-list');
+											const ph = document.getElementById('blog-placeholder');
+											if (!ul) return;
+
+											const owner = 'iamanishx';
+											const repo = 'archive';
+											const branch = 'main';
+											const api = `https://api.github.com/repos/${owner}/${repo}/contents/blogs?ref=${branch}`;
+
+											function titleFromFilename(name) {
+												const base = name.replace(/\.[^.]+$/, '');
+												return base.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+											}
+
+											// Compute base path for project pages (e.g., /archive) vs user pages (/)
+											function projectBase() {
+												const segs = location.pathname.split('/').filter(Boolean);
+												if (segs.length > 0 && segs[0] !== 'blogs') return '/' + segs[0];
+												return '';
+											}
+
+											fetch(api, { headers: { 'Accept': 'application/vnd.github.v3+json' }})
+												.then(r => r.ok ? r.json() : Promise.reject(r))
+												.then(list => {
+													const base = projectBase();
+													const items = (Array.isArray(list) ? list : []).filter(x => x.type === 'file' && /\.html?$/i.test(x.name));
+													ul.innerHTML = '';
+													if (items.length === 0) {
+														if (ph) ph.textContent = 'No blogs yet. Add .html files inside the blogs/ folder.';
+														return;
+													}
+													for (const itm of items) {
+														const li = document.createElement('li');
+														const a = document.createElement('a');
+														a.href = `${base}/blogs/${encodeURIComponent(itm.name)}`;
+														a.innerHTML = `<span>${titleFromFilename(itm.name)}</span> <span class="fname">(${itm.name})</span>`;
+														li.appendChild(a);
+														ul.appendChild(li);
+													}
+													if (ph) ph.remove();
+												})
+												.catch(() => {
+													if (ph) ph.textContent = 'Unable to load blogs right now.';
+												});
+										})();
+									</script>
 
 			<footer>
 				<span>© {{ site.time | date: '%Y' }} · Built for GitHub Pages</span>
