@@ -1,0 +1,739 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Pytorch Basics : </title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 111, 200, 0.09);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="28314be9-f02f-8066-b008-dfca12c5de16" class="page sans"><header><h1 class="page-title">Pytorch Basics : </h1><p class="page-description"></p></header><div class="page-body"><hr id="28314be9-f02f-8084-9c87-cdf0f9d2ddc7"/><h1 id="28314be9-f02f-808b-9c2f-e0c04bd674ef" class="">1. Creating tensors</h1><ul id="28314be9-f02f-80be-a7bb-d42e67851c0c" class="bulleted-list"><li style="list-style-type:disc">Random: <code>torch.rand(shape)</code> (uniform in [0,1)), <code>torch.randn(shape)</code> (normal).</li></ul><ul id="28314be9-f02f-80e4-84f2-e75ef6070749" class="bulleted-list"><li style="list-style-type:disc"><code>torch.Tensor(2, 3) </code> uninitialized tensor (random garbage values).</li></ul><ul id="28314be9-f02f-8076-8094-dc1bec957ca0" class="bulleted-list"><li style="list-style-type:disc">Zeros/ones/full: <code>torch.zeros(2,3)</code>, <code>torch.ones(2,3)</code>, <code>torch.full((2,3), 5)</code></li></ul><ul id="28314be9-f02f-802d-9190-c5292f537b13" class="bulleted-list"><li style="list-style-type:disc">From Python list / NumPy: <code>torch.tensor([[1,2],[3,4]])</code>, <code>torch.from_numpy(numpy_array)</code><p id="28314be9-f02f-802b-b970-d5b047034145" class="">→ dtype follows source NumPy dtype (e.g., <code>Float64</code> → <code>torch.DoubleTensor</code>)</p></li></ul><ul id="28314be9-f02f-8062-b2a9-c488e50a96f8" class="bulleted-list"><li style="list-style-type:disc">Type-casting: <code>x.float()</code>, <code>x.long()</code>, or <code>torch.tensor(..., dtype=torch.int64)</code></li></ul><ul id="28314be9-f02f-8086-8714-fdc5598aa0b6" class="bulleted-list"><li style="list-style-type:disc">In-place ops: methods with <code>_</code> (e.g., <code>x.fill_(5)</code>) modify the tensor in-place.</li></ul><hr id="28314be9-f02f-80b4-bdb3-d3a0109dbac3"/><h1 id="28314be9-f02f-804d-840d-f162b70f817e" class="">2. Inspecting tensors</h1><ul id="28314be9-f02f-80fa-af57-f8c7efeba681" class="bulleted-list"><li style="list-style-type:disc"><code>x.shape</code> or <code>x.size()</code></li></ul><ul id="28314be9-f02f-8047-bf7d-fbb00a464d50" class="bulleted-list"><li style="list-style-type:disc"><code>x.dtype</code>, <code>x.device</code>, <code>x.numel()</code> (num elements)</li></ul><ul id="28314be9-f02f-8059-966c-fb4afa933b19" class="bulleted-list"><li style="list-style-type:disc"><code>x.item()</code> -&gt; Python scalar (only for single-element tensors)</li></ul><hr id="28314be9-f02f-8083-a62a-c98121883101"/><h1 id="28314be9-f02f-803b-90c9-f99864b989ee" class="">3. Reshape / dimensions</h1><ul id="28314be9-f02f-802b-8d31-ffa15f0531d6" class="bulleted-list"><li style="list-style-type:disc"><code>x.view(new_shape)</code> (works if contiguous), <code>x.reshape(new_shape)</code> (safer)</li></ul><ul id="28314be9-f02f-8023-b793-f664f1b01bb4" class="bulleted-list"><li style="list-style-type:disc"><code>x.unsqueeze(dim)</code> — add size-1 dim</li></ul><ul id="28314be9-f02f-80b1-b59d-f5ff75b13193" class="bulleted-list"><li style="list-style-type:disc"><code>x.squeeze(dim)</code> — remove size-1 dim</li></ul><ul id="28314be9-f02f-80da-9d75-cbaf6d603620" class="bulleted-list"><li style="list-style-type:disc"><code>x.transpose(0,1)</code> or <code>x.t()</code> for 2D</li></ul><ul id="28314be9-f02f-806d-8aee-f792656d9f04" class="bulleted-list"><li style="list-style-type:disc"><code>x.permute(...)</code> reorder dims</li></ul><ul id="28314be9-f02f-8058-8d0f-f7257162a25f" class="bulleted-list"><li style="list-style-type:disc"><code>x.contiguous()</code> to get contiguous memory before <code>.view()</code></li></ul><hr id="28314be9-f02f-8048-a47a-c9e6fb101873"/><h1 id="28314be9-f02f-8000-b703-c91cce9751b6" class="">4. Indexing / slicing / advanced indexing</h1><ul id="28314be9-f02f-8038-988c-c62dc3fdfbbc" class="bulleted-list"><li style="list-style-type:disc">Basic slicing: <code>x[:, :2]</code>, <code>x[0,1]</code></li></ul><ul id="28314be9-f02f-80e1-a61e-fc0963a4fab1" class="bulleted-list"><li style="list-style-type:disc">Fancy indexing: <code>torch.index_select(x, dim, idx_longtensor)</code></li></ul><ul id="28314be9-f02f-80b6-9710-e349ab6d26f4" class="bulleted-list"><li style="list-style-type:disc">Pair indexing: <code>x[row_idx, col_idx]</code> where both are LongTensors</li></ul><ul id="28314be9-f02f-80c4-a005-d0938969284e" class="bulleted-list"><li style="list-style-type:disc"><code>torch.nonzero(x)</code> or <code>x.nonzero()</code> for indices of nonzero elements</li></ul><hr id="28314be9-f02f-809b-81f0-d9ca6dd7f2d3"/><h1 id="28314be9-f02f-802f-997d-ee5010b41b42" class="">5. Concatenate / stack</h1><ul id="28314be9-f02f-8019-a1c6-dc6866bd6dd0" class="bulleted-list"><li style="list-style-type:disc"><code>torch.cat([a,b], dim=0)</code> — concatenate along an existing dimension</li></ul><ul id="28314be9-f02f-80d6-a6c4-d0c9d2d4b10a" class="bulleted-list"><li style="list-style-type:disc"><code>torch.stack([a,b], dim=0)</code> — add new dimension and stack</li></ul><hr id="28314be9-f02f-804d-996b-da87c6431d55"/><h1 id="28314be9-f02f-8014-9614-f5e449406d73" class="">6. Broadcasting / arithmetic</h1><ul id="28314be9-f02f-807a-abc5-ecdee08f7370" class="bulleted-list"><li style="list-style-type:disc">Usual ops: <code>+</code>, , , <code>/</code>, or functional: <code>torch.add</code>, <code>torch.mul</code>, ...</li></ul><ul id="28314be9-f02f-804b-ba90-e9162563e5de" class="bulleted-list"><li style="list-style-type:disc">Matrix multiply: <code>torch.mm(A,B)</code> (2D), <code>torch.matmul</code> (broadcast-aware)</li></ul><ul id="28314be9-f02f-8014-9374-d906d4ba3bfb" class="bulleted-list"><li style="list-style-type:disc">Batch matrix multiply: <code>torch.bmm(a, b)</code> for 3D <code>a</code> and <code>b</code></li></ul><ul id="28314be9-f02f-8092-b2f6-d20754d86ad0" class="bulleted-list"><li style="list-style-type:disc">Aggregations: <code>x.sum(dim=...)</code>, <code>x.mean(dim=...)</code>, <code>x.max(dim=...)</code></li></ul><hr id="28314be9-f02f-809b-9eca-e788e2c02e36"/><h1 id="28314be9-f02f-804e-b138-f01ee728dd1b" class="">7. Linear algebra helpers</h1><ul id="28314be9-f02f-803c-af2d-c7aa8a6091ad" class="bulleted-list"><li style="list-style-type:disc"><code>torch.mm(A,B)</code> — matrix multiply (2D)</li></ul><ul id="28314be9-f02f-8063-b5fb-de06b086829d" class="bulleted-list"><li style="list-style-type:disc"><code>torch.bmm(A,B)</code> — batch matrix multiply (3D)</li></ul><ul id="28314be9-f02f-80f2-bbcc-f9e04f2f1575" class="bulleted-list"><li style="list-style-type:disc"><code>torch.transpose</code>, <code>torch.inverse</code> (when square), <code>torch.trace</code>, <code>torch.eig</code> etc.</li></ul><hr id="28314be9-f02f-80d0-915c-d4b985999688"/><h1 id="28314be9-f02f-80f9-b791-fa0cadfbeda4" class="">8. Random seeds</h1><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="28314be9-f02f-809d-9906-e9989071ba12" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">torch.manual_seed(42)
+if torch.cuda.is_available(): torch.cuda.manual_seed_all(42)</code></pre><hr id="28314be9-f02f-8056-8471-e3fecea38736"/><h1 id="28314be9-f02f-80af-a46f-dd6115dc4b31" class="">9. Autograd / gradients (the core)</h1><ul id="28314be9-f02f-8097-8c72-e2d8899cc08d" class="bulleted-list"><li style="list-style-type:disc">Enable tracking: <code>x = torch.ones(2,2, requires_grad=True)</code></li></ul><ul id="28314be9-f02f-800f-9925-f5178c9a7f56" class="bulleted-list"><li style="list-style-type:disc">Forward: compute loss scalar <code>loss = some_fn(x)</code></li></ul><ul id="28314be9-f02f-80cf-9d73-d7068e1f1d54" class="bulleted-list"><li style="list-style-type:disc">Backward: <code>loss.backward()</code> computes gradients; check <code>x.grad</code></li></ul><ul id="28314be9-f02f-80f2-b87b-f16d46e1e126" class="bulleted-list"><li style="list-style-type:disc">Zero grads before optimizer step: <code>optimizer.zero_grad()</code> or <code>model.zero_grad()</code></li></ul><ul id="28314be9-f02f-804c-9621-cbafbb226578" class="bulleted-list"><li style="list-style-type:disc">Inference / disable grad: use <code>with torch.no_grad():</code> or <code>torch.set_grad_enabled(False)</code></li></ul><ul id="28314be9-f02f-8038-b7e2-db9724b509dd" class="bulleted-list"><li style="list-style-type:disc">Detach from graph: <code>y = x.detach()</code> or <code>x.detach().cpu().numpy()</code></li></ul><hr id="28314be9-f02f-8095-9815-cea57412a7d3"/><h1 id="28314be9-f02f-801d-9418-fb21dcff29d0" class="">10. Common neural-net building blocks</h1><ul id="28314be9-f02f-80d8-856d-f2f834b213a6" class="bulleted-list"><li style="list-style-type:disc">Layers: <code>torch.nn.Linear</code>, <code>torch.nn.Conv2d</code>, <code>torch.nn.Embedding</code>, <code>torch.nn.LSTM</code>, ...</li></ul><ul id="28314be9-f02f-806f-bb32-f40cee33d664" class="bulleted-list"><li style="list-style-type:disc">Losses: <code>torch.nn.CrossEntropyLoss()</code>, <code>torch.nn.MSELoss()</code>, <code>torch.nn.BCEWithLogitsLoss()</code></li></ul><ul id="28314be9-f02f-80e8-9557-d6c75607da28" class="bulleted-list"><li style="list-style-type:disc">Activation functions: <code>torch.nn.ReLU()</code>, <code>torch.nn.Sigmoid()</code>, <code>torch.nn.Softmax(dim=1)</code>, or functional <code>F.relu</code></li></ul><ul id="28314be9-f02f-8085-810c-dc9d7b6bc450" class="bulleted-list"><li style="list-style-type:disc">Example simple module:</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="28314be9-f02f-80d9-b742-c038ec7e759b" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">import torch.nn as nn
+class MLP(nn.Module):
+    def __init__(self, in_dim, hidden, out_dim):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(in_dim, hidden),
+            nn.ReLU(),
+            nn.Linear(hidden, out_dim)
+        )
+    def forward(self, x):
+        return self.net(x)</code></pre><hr id="28314be9-f02f-809b-aba0-f4ea3b179725"/><h1 id="28314be9-f02f-801f-b388-d9c56a411622" class="">11. Training loop (minimal pattern)</h1><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="28314be9-f02f-80ed-9f6e-f8e28d7782b6" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">model.train()
+for epoch in range(epochs):
+    for xb, yb in dataloader:
+        xb, yb = xb.to(device), yb.to(device)
+        preds = model(xb)
+        loss = criterion(preds, yb)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()</code></pre><ul id="28314be9-f02f-80a2-992a-d1609d4ce980" class="bulleted-list"><li style="list-style-type:disc">For evaluation:</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="28314be9-f02f-8098-9c04-e73136534b17" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">model.eval()
+with torch.no_grad():
+    for xb, yb in val_loader:
+        preds = model(xb)
+        # compute metrics</code></pre><hr id="28314be9-f02f-80db-bf75-dcae3c35ceb1"/><h1 id="28314be9-f02f-8015-b1a8-d336602dbf9c" class="">12. Optimizers &amp; schedulers</h1><ul id="28314be9-f02f-8076-90a0-e1a689050d0d" class="bulleted-list"><li style="list-style-type:disc">Common optimizers: <code>torch.optim.SGD(model.parameters(), lr=...)</code>, <code>torch.optim.Adam(...)</code></li></ul><ul id="28314be9-f02f-80a5-950e-e59806b17f2f" class="bulleted-list"><li style="list-style-type:disc">Zero grads: <code>optimizer.zero_grad()</code></li></ul><ul id="28314be9-f02f-808d-9283-f6ca403d64b4" class="bulleted-list"><li style="list-style-type:disc">Step: <code>optimizer.step()</code></li></ul><ul id="28314be9-f02f-80f3-b946-e83b3e8bcc22" class="bulleted-list"><li style="list-style-type:disc">LR schedulers: <code>torch.optim.lr_scheduler.StepLR</code>, <code>ReduceLROnPlateau</code>, etc.</li></ul><hr id="28314be9-f02f-8012-a385-d0b454f21991"/><h1 id="28314be9-f02f-8037-9d92-daf56cd98696" class="">13. Save &amp; load model</h1><ul id="28314be9-f02f-8099-997e-ef49cb239772" class="bulleted-list"><li style="list-style-type:disc">Save weights: <code>torch.save(model.state_dict(), &quot;m.pt&quot;)</code></li></ul><ul id="28314be9-f02f-8012-a298-f7a551280e3e" class="bulleted-list"><li style="list-style-type:disc">Load:</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="28314be9-f02f-809c-909c-c1c3f4e76c1b" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">model = MyModel(...)
+model.load_state_dict(torch.load(&quot;m.pt&quot;, map_location=device))
+model.to(device)</code></pre><ul id="28314be9-f02f-80e0-831e-e6bd95bf4436" class="bulleted-list"><li style="list-style-type:disc">Save whole model (less recommended): <code>torch.save(model, &quot;full_model.pt&quot;)</code> and <code>torch.load(...)</code></li></ul><hr id="28314be9-f02f-8034-bdd0-d2c8b844ff8d"/><h1 id="28314be9-f02f-80e7-bc86-c391a43f7cb3" class="">14. Data pipeline</h1><ul id="28314be9-f02f-80cc-b701-cd1ee68a9601" class="bulleted-list"><li style="list-style-type:disc">Implement <code>torch.utils.data.Dataset</code> (implement <code>__len__</code> and <code>__getitem__</code>)</li></ul><ul id="28314be9-f02f-8099-b062-d4cfa2f65de0" class="bulleted-list"><li style="list-style-type:disc">Wrap in <code>DataLoader(dataset, batch_size=..., shuffle=True, num_workers=4)</code></li></ul><ul id="28314be9-f02f-8076-9c18-eb6291ae37a9" class="bulleted-list"><li style="list-style-type:disc">Use <code>torchvision.transforms</code> for images or <code>torchtext</code> / custom transforms for text.</li></ul><ul id="28314be9-f02f-803c-bb6b-cf4b6f2dc2d0" class="bulleted-list"><li style="list-style-type:disc">For reproducibility, be careful with <code>num_workers&gt;0</code> &amp; random seeds.</li></ul><hr id="28314be9-f02f-80cf-915f-e1f48bc791a6"/><h1 id="28314be9-f02f-804c-850f-f2afe803070d" class="">15. Useful tensor utilities</h1><ul id="28314be9-f02f-801a-adf4-f827044efa61" class="bulleted-list"><li style="list-style-type:disc"><code>torch.arange(start, end)</code> — like numpy <code>arange</code></li></ul><ul id="28314be9-f02f-8084-aae3-d28cd934a3a6" class="bulleted-list"><li style="list-style-type:disc"><code>torch.linspace(start, end, steps)</code></li></ul><ul id="28314be9-f02f-80f8-913d-dc7a5c823f51" class="bulleted-list"><li style="list-style-type:disc"><code>torch.where(cond, x, y)</code> — elementwise condition</li></ul><ul id="28314be9-f02f-809e-8a1c-e00e541b3b76" class="bulleted-list"><li style="list-style-type:disc"><code>torch.topk(x, k)</code>, <code>torch.argmax(x, dim)</code>, <code>torch.argsort</code></li></ul><ul id="28314be9-f02f-801c-a99a-c90119671661" class="bulleted-list"><li style="list-style-type:disc"><code>x.view(-1)</code>, <code>x.flatten()</code></li></ul><ul id="28314be9-f02f-8075-8f6c-dcc9a00f1801" class="bulleted-list"><li style="list-style-type:disc"><code>x.expand(...)</code> vs <code>x.repeat(...)</code> (repeat creates new memory, expand is view-like)</li></ul><ul id="28314be9-f02f-8093-8081-f701c00a28f3" class="bulleted-list"><li style="list-style-type:disc"><code>x.clone()</code> to copy</li></ul><ul id="28314be9-f02f-80d9-9f6f-c47c3a1e7020" class="bulleted-list"><li style="list-style-type:disc"><code>x.cpu().numpy()</code> to get NumPy array (after <code>detach()</code> if requires_grad)</li></ul><hr id="28314be9-f02f-80bb-9a9d-db13f3caa84b"/><h1 id="28314be9-f02f-8053-ab86-e63184832db0" class="">16. Memory / performance tips</h1><ul id="28314be9-f02f-805e-9c3a-ca60094d8796" class="bulleted-list"><li style="list-style-type:disc">Prefer <code>torch.no_grad()</code> when evaluating (saves memory).</li></ul><ul id="28314be9-f02f-8063-be50-c1e39e2d0313" class="bulleted-list"><li style="list-style-type:disc">Move whole batch to device once, not per-element.</li></ul><ul id="28314be9-f02f-80c4-96ee-d2736da13bac" class="bulleted-list"><li style="list-style-type:disc">Avoid frequent <code>.cpu()</code> / <code>.numpy()</code> inside training loops (costly).</li></ul><ul id="28314be9-f02f-80e1-9766-d7e96d0ffd98" class="bulleted-list"><li style="list-style-type:disc">Use <code>pin_memory=True</code> in DataLoader for faster CPU→GPU transfers (for GPU training).</li></ul><ul id="28314be9-f02f-80cd-aaeb-e0d0203cdafa" class="bulleted-list"><li style="list-style-type:disc">For multi-GPU training, consider <code>torch.nn.DataParallel</code> or <code>torch.nn.parallel.DistributedDataParallel</code>.</li></ul><hr id="28314be9-f02f-80f8-b74a-f87dc2b79510"/><h1 id="28314be9-f02f-8099-9fae-da3c0400fbd7" class="">17. Common pitfalls &amp; gotchas</h1><ul id="28314be9-f02f-809d-95cc-d8af7c78bae6" class="bulleted-list"><li style="list-style-type:disc">Mixing CPU and CUDA tensors → <code>RuntimeError</code>.</li></ul><ul id="28314be9-f02f-80c3-a23f-ec90bde132a2" class="bulleted-list"><li style="list-style-type:disc">Forgetting <code>optimizer.zero_grad()</code> → gradients accumulate.</li></ul><ul id="28314be9-f02f-80e4-b0ce-d2c279ff4e68" class="bulleted-list"><li style="list-style-type:disc">Using <code>.item()</code> on non-scalar tensors → error.</li></ul><ul id="28314be9-f02f-8007-b357-ed04fd2db8cf" class="bulleted-list"><li style="list-style-type:disc">In-place ops (e.g., <code>x += y</code> on variables that require grad) can break autograd sometimes; prefer out-of-place or be careful.</li></ul><ul id="28314be9-f02f-80b1-8690-ef1c360b3208" class="bulleted-list"><li style="list-style-type:disc">Computing target-encoding / normalization <em>using whole dataset</em> causes data leakage — compute on training fold only.</li></ul><hr id="28314be9-f02f-801c-8802-f2eaba4b42be"/><h1 id="28314be9-f02f-8078-808c-d2611aa91e5d" class="">18. Short example snippets</h1><p id="28314be9-f02f-800b-935f-d24c3a0f493f" class="">Create tensor, reshape, and sum:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="28314be9-f02f-80e2-9246-fa87505ec709" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">x = torch.arange(6).view(2,3)   # [[0,1,2],[3,4,5]]
+col_sum = x.sum(dim=0)          # [3,5,7]
+row_sum = x.sum(dim=1)          # [3,12]</code></pre><p id="28314be9-f02f-809c-a4df-df3aebb89d71" class="">Gradients example:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="28314be9-f02f-8068-a4ff-c0a935fd5dfe" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">x = torch.ones(2,2, requires_grad=True)
+y = (x + 2) * (x + 5) + 3
+z = y.mean()
+z.backward()
+print(x.grad)  # gradient of z wrt x</code></pre><p id="28314be9-f02f-808f-b7c1-e2e29acb2c7f" class="">Batch matrix multiply:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="28314be9-f02f-8086-b642-e646d48b719a" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">a = torch.rand(3,4,5)
+b = torch.rand(3,5,4)
+c = torch.bmm(a,b)   # shape (3,4,4)</code></pre></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
