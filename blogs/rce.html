@@ -6,14 +6,19 @@
     <title>React2Shell: what happened, why it matters, and why I’m a little paranoid now</title>
     <style>
         body {
-            background-color: black;
-            color: white;
+            background-color: rgb(123, 196, 227);
+            color: rgb(0, 0, 0);
             font-family: Arial, sans-serif;
             line-height: 1.6;
             margin: 20px;
         }
+        .wrap {
+            max-width: 840px;
+            margin: 0 auto;
+            padding: 24px;
+        }
         h1, h2 {
-            color: #ffffff;
+            color: #000000;
         }
         code {
             background-color: #333;
@@ -26,7 +31,8 @@
     </style>
 </head>
 <body>
-    <h1>React2Shell: what happened, why it matters, and why I’m a little paranoid now</h1>
+    <div class="wrap">
+    <h1>React2Shell: what happened</h1>
     <p>I spent the last few days reading through the React2Shell mess and wanted to write down a simple explanation so my friends don’t freak out in the wrong way. This isn’t a deep security paper, just me explaining what it means and why it happened in plain words.</p>
     <h2>What happened, in one line</h2>
     <p>React2Shell is a critical bug in React Server Components and the Flight protocol that could let an attacker get code running on your server. That is the absolute worst outcome for a web app.</p>
@@ -65,5 +71,6 @@
     <p>React Server Components are cool and they solve real problems, but they add new complexity and new security risks. Framework-level bugs like this are rare but when they happen they hurt a lot. The lesson is simple: powerful features need careful safety checks, and as engineers we should prefer clear boundaries between client and server unless we really need the tight coupling.</p>
     <p>If you want a short script I used to check a repo for obvious red flags like an app/ folder or react-server-dom packages, I can share that next. Or if you want a tweet-ready summary, I can make one.</p>
     <p>Stay safe out there.</p>
+    </div>
 </body>
 </html>
