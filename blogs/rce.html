@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React2Shell: what happened, why it matters, and why I’m a little paranoid now</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #ffffff;
+        }
+        code {
+            background-color: #333;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        ul, ol {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>React2Shell: what happened, why it matters, and why I’m a little paranoid now</h1>
+    <p>I spent the last few days reading through the React2Shell mess and wanted to write down a simple explanation so my friends don’t freak out in the wrong way. This isn’t a deep security paper, just me explaining what it means and why it happened in plain words.</p>
+    <h2>What happened, in one line</h2>
+    <p>React2Shell is a critical bug in React Server Components and the Flight protocol that could let an attacker get code running on your server. That is the absolute worst outcome for a web app.</p>
+    <h2>Why it is so scary</h2>
+    <p>If an attacker can run code on your server they can read secrets, steal DB credentials, install malware, or do anything the server user could do. This particular bug could be exploited without authentication and it bypassed many common protections. That combination is why people called it 10/10 severity.</p>
+    <h2>A simple, step by step idea of how the attack works</h2>
+    <p>I will keep this high level and not show exploit details.</p>
+    <ol>
+        <li>React Server Components use a protocol called Flight to stream complex data between server and client. Flight can represent live things like promises and references.</li>
+        <li>The server receives a Flight payload and deserializes it into objects React can work with while rendering.</li>
+        <li>The bug was a missing safety check in that deserialization code. Because JavaScript is so dynamic, an attacker can craft payloads that look like normal objects but actually trick the deserializer into touching internal or prototype properties.</li>
+        <li>Once the attacker-controlled data gains access to certain runtime parts, they can get a handle that leads to code evaluation mechanisms in JavaScript.</li>
+        <li>At that point the attacker can make the server run arbitrary code.</li>
+    </ol>
+    <h2>Why this happened</h2>
+    <p>There are a few reasons it was possible.</p>
+    <ul>
+        <li>JavaScript is very dynamic. Objects can pretend to be promises or functions. Prototype chains are flexible. That makes serialization and deserialization tricky.</li>
+        <li>Flight is powerful. It was designed to stream complex, interlinked data fast. That power meant more surface to get wrong.</li>
+        <li>The specific mistake was subtle: absent or insufficient checks during deserialization allowed crafted input to reach internal host objects. A small omission, big consequence.</li>
+        <li>Finally, RSC was in wide use in Next.js by default, so the blast radius was large.</li>
+    </ul>
+    <h2>Why WAFs and CDNs were not a panacea</h2>
+    <p>WAFs look for network-level signatures. This exploit used valid-looking Flight messages, so many WAFs did not flag it. Firewalls can help block known exploit patterns, but they do not fix the underlying vulnerability. Patching is the real fix.</p>
+    <h2>What you should do right now if you run apps</h2>
+    <p>Short checklist you can run through quickly.</p>
+    <ul>
+        <li>Update React and Next.js to the patched versions immediately.</li>
+        <li>If you use the App Router or have an app/ folder, treat your app as in the blast radius until patched.</li>
+        <li>Do not rely on WAFs as your only defense. They can reduce noise but are not the fix.</li>
+        <li>Audit server components. If you put DB access or secrets directly in server components, consider moving them behind explicit API routes for now.</li>
+        <li>Rotate secrets and credentials if you have any reason to suspect a breach.</li>
+        <li>Turn on monitoring and look for odd processes, spikes in outbound connections, or unusual logs.</li>
+    </ul>
+    <h2>My takeaways</h2>
+    <p>React Server Components are cool and they solve real problems, but they add new complexity and new security risks. Framework-level bugs like this are rare but when they happen they hurt a lot. The lesson is simple: powerful features need careful safety checks, and as engineers we should prefer clear boundaries between client and server unless we really need the tight coupling.</p>
+    <p>If you want a short script I used to check a repo for obvious red flags like an app/ folder or react-server-dom packages, I can share that next. Or if you want a tweet-ready summary, I can make one.</p>
+    <p>Stay safe out there.</p>
+</body>
+</html>
