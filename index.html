@@ -1,191 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Archives</title>
-    <meta name="description" content="Minimal portfolio and blog index" />
-    <style>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Archives</title>
+  <meta name="description" content="Minimal portfolio and blog index" />
+  <style>
+    :root {
+      --bg: #0b0c0f;
+      --panel: #12141a;
+      --text: #e8eaf0;
+      --muted: #adb4c2;
+      --link: #61dafb;
+      --accent: #d0d6e4;
+      --border: #1f2330;
+    }
+
+    @media (prefers-color-scheme: light) {
       :root {
-        --bg: #0b0c0f;
-        --panel: #12141a;
-        --text: #e8eaf0;
-        --muted: #adb4c2;
-        --link: #61dafb;
-        --accent: #d0d6e4;
-        --border: #1f2330;
+        --bg: #ffffff;
+        --panel: #f6f7fb;
+        --text: #0e1116;
+        --muted: #475569;
+        --link: #0366d6;
+        --accent: #1f2937;
+        --border: #e5e7eb;
       }
-      @media (prefers-color-scheme: light) {
-        :root {
-          --bg: #ffffff;
-          --panel: #f6f7fb;
-          --text: #0e1116;
-          --muted: #475569;
-          --link: #0366d6;
-          --accent: #1f2937;
-          --border: #e5e7eb;
-        }
-      }
-      html,
-      body {
-        height: 100%;
-      }
-      body {
-        margin: 0;
-        background: var(--bg);
-        color: var(--text);
-        font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
-          Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji",
-          "Segoe UI Emoji";
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-      .wrap {
-        max-width: 840px;
-        margin: 0 auto;
-        padding: 24px;
-      }
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+        Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji",
+        "Segoe UI Emoji";
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .wrap {
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    header img {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      background: var(--panel);
+    }
+
+    h1 {
+      margin: 0 0 4px;
+      font-size: 28px;
+      line-height: 1.25;
+      color: var(--accent);
+    }
+
+    .tagline {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .links {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      margin-top: 28px;
+      padding: 18px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    section h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: var(--accent);
+    }
+
+    .about p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .blog-list {
+      list-style: none;
+      padding: 0;
+      margin: 8px 0 0;
+    }
+
+    .blog-list li {
+      padding: 10px 0;
+      border-top: 1px dashed var(--border);
+    }
+
+    .blog-list li:first-child {
+      border-top: 0;
+    }
+
+    .blog-list a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .blog-list .fname {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    footer {
+      margin: 24px 0 8px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 32px;
+      margin: 12px 0 0;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 24px;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -28px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--link);
+      border: 2px solid var(--panel);
+      box-shadow: 0 0 0 2px var(--link);
+    }
+
+    .timeline-item h3 {
+      margin: 0 0 4px;
+      font-size: 16px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .timeline-item .company {
+      color: var(--text);
+      font-size: 15px;
+      margin: 0 0 4px;
+    }
+
+    .timeline-item .period {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+    }
+
+    @media (max-width: 520px) {
       header {
-        display: grid;
-        grid-template-columns: 96px 1fr;
-        gap: 16px;
-        align-items: center;
+        grid-template-columns: 72px 1fr;
       }
+
       header img {
-        width: 96px;
-        height: 96px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 1px solid var(--border);
-        background: var(--panel);
+        width: 72px;
+        height: 72px;
       }
-      h1 {
-        margin: 0 0 4px;
-        font-size: 28px;
-        line-height: 1.25;
-        color: var(--accent);
+
+      .timeline {
+        padding-left: 24px;
       }
-      .tagline {
-        margin: 0;
-        color: var(--muted);
-        font-size: 14px;
+
+      .timeline-item::before {
+        left: -20px;
       }
-      .links {
-        margin-top: 8px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-      a {
-        color: var(--link);
-        text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-      section {
-        margin-top: 28px;
-        padding: 18px;
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-      }
-      section h2 {
-        margin: 0 0 8px;
-        font-size: 18px;
-        color: var(--accent);
-      }
-      .about p {
-        margin: 0;
-        color: var(--muted);
-      }
-      .blog-list {
-        list-style: none;
-        padding: 0;
-        margin: 8px 0 0;
-      }
-      .blog-list li {
-        padding: 10px 0;
-        border-top: 1px dashed var(--border);
-      }
-      .blog-list li:first-child {
-        border-top: 0;
-      }
-      .blog-list a {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .blog-list .fname {
-        color: var(--muted);
-        font-size: 13px;
-      }
-      footer {
-        margin: 24px 0 8px;
-        text-align: center;
-        color: var(--muted);
-        font-size: 13px;
-      }
-      @media (max-width: 520px) {
-        header {
-          grid-template-columns: 72px 1fr;
-        }
-        header img {
-          width: 72px;
-          height: 72px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <main class="wrap">
-      <header>
-        <img
-          src="https://avatars.githubusercontent.com/u/146447671?v=4"
-          alt="Your profile"
-        />
-        <div>
-          <h1>Manish Biswal</h1>
-          <p class="tagline">Archives</p>
-          <div class="links">
-            <a href="mailto:manishbiswal754@gmail.com">mail</a>
-            <a
-              href="https://www.linkedin.com/in/manish-biswal-xd"
-              target="_blank"
-              rel="noopener"
-              >LinkedIn</a
-            >
-            <a
-              href="https://github.com/iamanishx"
-              target="_blank"
-              rel="noopener"
-              >Github</a
-            >
-            <a
-              href="https://x.com/iamanishx"
-              target="_blank"
-              rel="noopener"
-              >Twitter</a
-            >
-            <a href="mera_resume_2.pdf" target="_blank" rel="noopener">Resume</a>
-          </div>
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <header>
+      <img src="https://avatars.githubusercontent.com/u/146447671?v=4" alt="Your profile" />
+      <div>
+        <h1>Manish Biswal</h1>
+        <p class="tagline">Archives</p>
+        <div class="links">
+          <a href="mailto:manishbiswal754@gmail.com">mail</a>
+          <a href="https://www.linkedin.com/in/manish-biswal-xd" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://github.com/iamanishx" target="_blank" rel="noopener">Github</a>
+          <a href="https://x.com/iamanishx" target="_blank" rel="noopener">Twitter</a>
+          <a href="mera_resume_2.pdf" target="_blank" rel="noopener">Resume</a>
+          <a href="https://huggingface.co/iamanishx" target="_blank" rel="noopener">Huggingface</a>
         </div>
-      </header>
+      </div>
+    </header>
 
-      <section class="about">
-        <h2>About</h2>
-        <p>
-          Hey there! I'm Manish Biswal, a developer who’s all about building
-          and breaking stuffs. Contributor at GSoC. This is my little corner of
-          the web where I drop my thoughts, projects.
-        </p>
-      </section>
+    <section class="about">
+      <h2>About</h2>
+      <p>
+        Hey there! I'm Manish Biswal, a developer who’s all about building
+        and breaking stuffs. Contributor at GSoC. This is my little corner of
+        the web where I drop my thoughts, projects.
+      </p>
+    </section>
 
-      <section class="blogs">
-        <h2>Blogs</h2>
-        <ul class="blog-list" id="blog-list"></ul>
-        <p class="about" id="blog-placeholder">Loading…</p>
-      </section>
+    <section class="experience">
+      <h2>Experience</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <h3>SDE Intern</h3>
+          <p class="company">Clickpe (YC W23)</p>
+          <p class="period">Dec 2025 - Present</p>
+        </div>
+        <div class="timeline-item">
+          <h3>Contributor</h3>
+          <p class="company">Google Summer of Code 2025</p>
+          <p class="period">June 2025 - Sept 2025</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="blogs">
+      <h2>Blogs</h2>
+      <ul class="blog-list" id="blog-list"></ul>
+      <p class="about" id="blog-placeholder">Loading…</p>
+    </section>
 
     <script>
       (function () {
@@ -199,51 +287,54 @@
         const api = `https://api.github.com/repos/${owner}/${repo}/contents/blogs?ref=${branch}`;
 
         function titleFromFilename(name) {
-        const base = name.replace(/\.[^.]+$/, "");
-        return base
-          .replace(/[-_]/g, " ")
-          .replace(/\b\w/g, (c) => c.toUpperCase());
+          const base = name.replace(/\.[^.]+$/, "");
+          return base
+            .replace(/[-_]/g, " ")
+            .replace(/\b\w/g, (c) => c.toUpperCase());
         }
 
         function projectBase() {
-        const segs = location.pathname.split("/").filter(Boolean);
-        if (segs.length > 0 && segs[0] !== "blogs") return "/" + segs[0];
-        return "";
+          const segs = location.pathname.split("/").filter(Boolean);
+          if (segs.length > 0 && segs[0] !== "blogs") return "/" + segs[0];
+          return "";
         }
 
         fetch(api, { headers: { Accept: "application/vnd.github.v3+json" } })
-        .then((r) => (r.ok ? r.json() : Promise.reject(r)))
-        .then((list) => {
-          const base = projectBase();
-          const items = (Array.isArray(list) ? list : []).filter(
-            (x) => x.type === "file" && /\.html?$/i.test(x.name)
-          );
-          ul.innerHTML = "";
-          if (items.length === 0) {
-            if (ph)
-            ph.textContent =
-              "No blogs yet. Add .html files inside the blogs/ folder.";
-            return;
-          }
-          for (const itm of items) {
-            const li = document.createElement("li");
-            const a = document.createElement("a");
-            a.href = `${base}/blogs/${encodeURIComponent(itm.name)}`;
-            a.textContent = titleFromFilename(itm.name);
-            li.appendChild(a);
-            ul.appendChild(li);
-          }
-          if (ph) ph.remove();
-        })
-        .catch(() => {
-          if (ph) ph.textContent = "Unable to load blogs right now.";
-        });
+          .then((r) => (r.ok ? r.json() : Promise.reject(r)))
+          .then((list) => {
+            const base = projectBase();
+            const items = (Array.isArray(list) ? list : []).filter(
+              (x) => x.type === "file" && /\.html?$/i.test(x.name)
+            );
+            ul.innerHTML = "";
+            if (items.length === 0) {
+              if (ph)
+                ph.textContent =
+                  "No blogs yet. Add .html files inside the blogs/ folder.";
+              return;
+            }
+            for (const itm of items) {
+              const li = document.createElement("li");
+              const a = document.createElement("a");
+              a.href = `${base}/blogs/${encodeURIComponent(itm.name)}`;
+              a.textContent = titleFromFilename(itm.name);
+              li.appendChild(a);
+              ul.appendChild(li);
+            }
+            if (ph) ph.remove();
+          })
+          .catch(() => {
+            if (ph) ph.textContent = "Unable to load blogs right now.";
+          });
       })();
     </script>
 
-      <footer>
-        <span>© <script>document.write(new Date().getFullYear());</script> · All rights reserved</span>
-      </footer>
-    </main>
-  </body>
+    <footer>
+      <span>©
+        <script>document.write(new Date().getFullYear());</script> · All rights reserved
+      </span>
+    </footer>
+  </main>
+</body>
+
 </html>
