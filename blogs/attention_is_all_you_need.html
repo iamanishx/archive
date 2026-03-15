@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Attention Is All You Need — Interactive Paper</title>
+<title>Attention Is All You Need - Interactive Paper</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -167,7 +167,7 @@
 
 <!-- INTRODUCTION -->
 <div id="s-intro" class="sec">
-  <h2>§1 Introduction</h2>
+  <h2> 1 Introduction</h2>
   <p>RNNs and LSTMs were the dominant paradigm. They generate a hidden state <em>h</em>ₜ from the previous state <em>h</em>ₜ₋₁ and the current input. This sequential dependency is the problem.</p>
   <div class="grid2">
     <div class="card">
@@ -188,7 +188,7 @@
 
 <!-- ARCHITECTURE -->
 <div id="s-arch" class="sec">
-  <h2>§3 Model architecture</h2>
+  <h2> 3 Model architecture</h2>
   <p>The Transformer is an encoder-decoder model. Click through each layer to understand what it does.</p>
   <div class="step-nav" id="arch-nav"></div>
   <div id="arch-panels"></div>
@@ -199,7 +199,7 @@
 
 <!-- ATTENTION -->
 <div id="s-attn" class="sec">
-  <h2>§3.2 Scaled dot-product attention</h2>
+  <h2> 3.2 Scaled dot-product attention</h2>
   <p>Attention maps a <strong style="font-weight:500;color:var(--color-text-primary)">query</strong> against a set of <strong style="font-weight:500;color:var(--color-text-primary)">key-value pairs</strong>. The output is a weighted sum of the values, where weights come from how well the query matches each key.</p>
   <div class="mono">Attention(Q, K, V) = softmax( QKᵀ / √d_k ) · V</div>
   <div class="card">
@@ -220,7 +220,7 @@
 
 <!-- MULTI-HEAD -->
 <div id="s-mha" class="sec">
-  <h2>§3.2.2 Multi-head attention</h2>
+  <h2> 3.2.2 Multi-head attention</h2>
   <p>Instead of one big attention function, run <strong style="font-weight:500;color:var(--color-text-primary)">h = 8 parallel heads</strong>, each with its own learned projections down to d_k = 64. Concatenate and re-project.</p>
   <div class="mono">MultiHead(Q,K,V) = Concat(head₁,…,head₈) Wᴼ
 where headᵢ = Attention(Q Wᵢᴼ, K Wᵢᴷ, V Wᵢᵛ)</div>
@@ -239,7 +239,7 @@ where headᵢ = Attention(Q Wᵢᴼ, K Wᵢᴷ, V Wᵢᵛ)</div>
 
 <!-- POSITIONAL ENCODING -->
 <div id="s-pe" class="sec">
-  <h2>§3.5 Positional encoding</h2>
+  <h2> 3.5 Positional encoding</h2>
   <p>No recurrence, no convolution → the model is order-agnostic. Fix: add a positional encoding vector to each input embedding before the first layer.</p>
   <div class="mono">PE(pos, 2i)   = sin(pos / 10000^(2i/d_model))
 PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))</div>
@@ -256,7 +256,7 @@ PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))</div>
 
 <!-- WHY SELF-ATTENTION -->
 <div id="s-why" class="sec">
-  <h2>§4 Why self-attention?</h2>
+  <h2> 4 Why self-attention?</h2>
   <p>The paper compares three layer types across three criteria. Self-attention wins on two out of three.</p>
   <div style="overflow-x:auto;margin:12px 0">
     <table class="comp">
@@ -280,7 +280,7 @@ PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))</div>
 
 <!-- TRAINING -->
 <div id="s-train" class="sec">
-  <h2>§5 Training</h2>
+  <h2> 5 Training</h2>
   <div class="grid2">
     <div class="card"><p style="font-weight:500;color:var(--color-text-primary);margin-bottom:6px">Data</p><p style="font-size:13px;margin-bottom:4px">EN-DE: 4.5M sentence pairs, byte-pair encoding, 37K token vocab</p><p style="font-size:13px;margin:0">EN-FR: 36M sentences, 32K word-piece vocab</p></div>
     <div class="card"><p style="font-weight:500;color:var(--color-text-primary);margin-bottom:6px">Hardware</p><p style="font-size:13px;margin-bottom:4px">8× NVIDIA P100 GPUs, single machine</p><p style="font-size:13px;margin:0">Base: 100K steps (~12h). Big: 300K steps (3.5 days)</p></div>
@@ -300,7 +300,7 @@ warmup_steps = 4000</div>
 
 <!-- RESULTS -->
 <div id="s-results" class="sec">
-  <h2>§6 Results</h2>
+  <h2> 6 Results</h2>
   <h3>Machine translation (WMT 2014)</h3>
   <p style="font-size:13px;color:var(--color-text-tertiary);margin-bottom:8px">BLEU scores — higher is better:</p>
   <div class="bar-wrap" id="bleu-bars"></div>
@@ -317,7 +317,7 @@ warmup_steps = 4000</div>
 
 <!-- CONCLUSION -->
 <div id="s-conc" class="sec">
-  <h2>§7 Conclusion</h2>
+  <h2> 7 Conclusion</h2>
   <p>The Transformer is the first sequence transduction model based <em>entirely</em> on attention, replacing recurrent layers with multi-head self-attention.</p>
   <div class="card">
     <p style="font-weight:500;color:var(--color-text-primary);margin-bottom:6px">What the authors planned next</p>
@@ -329,7 +329,7 @@ warmup_steps = 4000</div>
   <div class="grid3">
     <div class="card"><p style="font-weight:500;color:#3C3489;font-size:13px;margin-bottom:3px">2018 — BERT / GPT</p><p style="font-size:12px;margin:0">Encoder/decoder stacks used for pre-training at scale</p></div>
     <div class="card"><p style="font-weight:500;color:#0F6E56;font-size:13px;margin-bottom:3px">2020 — GPT-3 / T5</p><p style="font-size:12px;margin:0">175B parameters, few-shot learning, text-to-text</p></div>
-    <div class="card"><p style="font-weight:500;color:#993C1D;font-size:13px;margin-bottom:3px">2021+ — ViT, Whisper</p><p style="font-size:12px;margin:0">Images, audio — exactly the vision from §7</p></div>
+    <div class="card"><p style="font-weight:500;color:#993C1D;font-size:13px;margin-bottom:3px">2021+ — ViT, Whisper</p><p style="font-size:12px;margin:0">Images, audio — exactly the vision from  7</p></div>
   </div>
   <p style="margin-top:12px">The architecture described in this 2017 paper, with only incremental modifications, is the backbone of every frontier model today.</p>
 </div>
