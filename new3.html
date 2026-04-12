@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@200;300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "surface-variant": "#2d3449",
+                "primary": "#c0c1ff",
+                "tertiary-container": "#2e0053",
+                "outline-variant": "#47464c",
+                "tertiary": "#ddb7ff",
+                "tertiary-fixed-dim": "#ddb7ff",
+                "secondary": "#4fdbc8",
+                "on-secondary-container": "#003f38",
+                "error-container": "#93000a",
+                "on-primary-container": "#7174ff",
+                "primary-container": "#07006f",
+                "inverse-primary": "#494bd6",
+                "secondary-fixed": "#71f8e4",
+                "on-error-container": "#ffdad6",
+                "surface-container-high": "#222a3d",
+                "outline": "#919097",
+                "inverse-surface": "#dae2fd",
+                "tertiary-fixed": "#f0dbff",
+                "surface-dim": "#0b1326",
+                "on-surface-variant": "#c8c5cd",
+                "secondary-container": "#04b4a2",
+                "on-error": "#690005",
+                "inverse-on-surface": "#283044",
+                "background": "#0b1326",
+                "on-secondary-fixed-variant": "#005048",
+                "surface-container-highest": "#2d3449",
+                "surface-tint": "#c0c1ff",
+                "surface": "#0b1326",
+                "on-secondary-fixed": "#00201c",
+                "on-tertiary-container": "#ad5afc",
+                "surface-container-low": "#131b2e",
+                "on-primary-fixed": "#07006c",
+                "surface-bright": "#31394d",
+                "on-surface": "#dae2fd",
+                "error": "#ffb4ab",
+                "on-primary": "#1000a9",
+                "primary-fixed-dim": "#c0c1ff",
+                "on-secondary": "#003731",
+                "surface-container-lowest": "#060e20",
+                "surface-container": "#171f33",
+                "primary-fixed": "#e1e0ff",
+                "on-tertiary-fixed": "#2c0051",
+                "on-primary-fixed-variant": "#2f2ebe",
+                "secondary-fixed-dim": "#4fdbc8",
+                "on-tertiary": "#490080",
+                "on-background": "#dae2fd"
+              },
+              fontFamily: {
+                "headline": ["Space Grotesk"],
+                "body": ["Manrope"],
+                "label": ["Manrope"]
+              },
+              borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .transmission-hover:hover .hover-line {
+            width: 2rem;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-secondary/30">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full bg-[#0b1326]/40 backdrop-blur-xl z-[100] flex justify-between items-center px-12 py-6 max-w-full no-border tonal-shift-bottom shadow-[0_32px_32px_rgba(218,226,253,0.06)]">
+<div class="text-xl font-bold tracking-widest text-[#dae2fd] font-['Space_Grotesk']">CosmicDev</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-['Space_Grotesk'] tracking-tighter uppercase text-sm text-[#dae2fd]/60 hover:text-[#4fdbc8] transition-colors duration-300" href="#">Work</a>
+<a class="font-['Space_Grotesk'] tracking-tighter uppercase text-sm text-[#dae2fd]/60 hover:text-[#4fdbc8] transition-colors duration-300" href="#">Tech</a>
+<a class="font-['Space_Grotesk'] tracking-tighter uppercase text-sm text-[#4fdbc8] border-b border-[#4fdbc8]" href="#">Orbit</a>
+</div>
+<button class="bg-[#c0c1ff] text-[#1000a9] px-6 py-2 rounded-full font-['Space_Grotesk'] text-sm tracking-widest uppercase transition-transform active:scale-95 duration-200 ease-out">Connect</button>
+</nav>
+<main class="min-h-screen pt-48 pb-24 px-6 md:px-12 max-w-4xl mx-auto">
+<!-- Page Header -->
+<header class="mb-32">
+<h1 class="font-headline text-6xl md:text-8xl font-bold tracking-tighter text-on-surface uppercase">
+                Transmissions
+            </h1>
+<div class="mt-4 flex items-center gap-4">
+<span class="h-[1px] w-12 bg-secondary"></span>
+<p class="font-label text-xs tracking-[0.2em] text-tertiary uppercase">Chronicles of the digital void</p>
+</div>
+</header>
+<!-- Blog List -->
+<section class="flex flex-col gap-24">
+<!-- Entry 01 -->
+<article class="group transmission-hover cursor-pointer">
+<div class="flex flex-col md:flex-row md:items-baseline justify-between gap-2 mb-2">
+<div class="flex items-center gap-4">
+<div class="hover-line w-0 h-[1px] bg-secondary opacity-0 transition-all duration-500 ease-out"></div>
+<h2 class="font-headline text-2xl md:text-3xl text-on-surface group-hover:text-secondary transition-colors duration-300 font-medium">
+                            The Cost of Visual Bloat
+                        </h2>
+</div>
+<time class="font-label text-[10px] tracking-widest text-on-surface-variant uppercase whitespace-nowrap">Dec 2024</time>
+</div>
+<p class="font-body text-on-surface-variant/80 text-sm max-w-xl leading-relaxed">
+                    Analyzing how unnecessary interface elements degrade cognitive focus and performance in modern web ecosystems.
+                </p>
+</article>
+<!-- Entry 02 -->
+<article class="group transmission-hover cursor-pointer">
+<div class="flex flex-col md:flex-row md:items-baseline justify-between gap-2 mb-2">
+<div class="flex items-center gap-4">
+<div class="hover-line w-0 h-[1px] bg-secondary opacity-0 transition-all duration-500 ease-out"></div>
+<h2 class="font-headline text-2xl md:text-3xl text-on-surface group-hover:text-secondary transition-colors duration-300 font-medium">
+                            Architecting the Silent Void
+                        </h2>
+</div>
+<time class="font-label text-[10px] tracking-widest text-on-surface-variant uppercase whitespace-nowrap">Nov 2024</time>
+</div>
+<p class="font-body text-on-surface-variant/80 text-sm max-w-xl leading-relaxed">
+                    A philosophy on utilizing negative space as a primary structural component rather than a container gap.
+                </p>
+</article>
+<!-- Entry 03 -->
+<article class="group transmission-hover cursor-pointer">
+<div class="flex flex-col md:flex-row md:items-baseline justify-between gap-2 mb-2">
+<div class="flex items-center gap-4">
+<div class="hover-line w-0 h-[1px] bg-secondary opacity-0 transition-all duration-500 ease-out"></div>
+<h2 class="font-headline text-2xl md:text-3xl text-on-surface group-hover:text-secondary transition-colors duration-300 font-medium">
+                            Binary Aesthetics
+                        </h2>
+</div>
+<time class="font-label text-[10px] tracking-widest text-on-surface-variant uppercase whitespace-nowrap">Oct 2024</time>
+</div>
+<p class="font-body text-on-surface-variant/80 text-sm max-w-xl leading-relaxed">
+                    Why high-contrast monochromatic palettes are returning to dominate high-end engineering portfolios.
+                </p>
+</article>
+<!-- Entry 04 -->
+<article class="group transmission-hover cursor-pointer">
+<div class="flex flex-col md:flex-row md:items-baseline justify-between gap-2 mb-2">
+<div class="flex items-center gap-4">
+<div class="hover-line w-0 h-[1px] bg-secondary opacity-0 transition-all duration-500 ease-out"></div>
+<h2 class="font-headline text-2xl md:text-3xl text-on-surface group-hover:text-secondary transition-colors duration-300 font-medium">
+                            Latency as a Design Choice
+                        </h2>
+</div>
+<time class="font-label text-[10px] tracking-widest text-on-surface-variant uppercase whitespace-nowrap">Sept 2024</time>
+</div>
+<p class="font-body text-on-surface-variant/80 text-sm max-w-xl leading-relaxed">
+                    Exploring the psychological impact of micro-interactions and deliberate loading sequences in UX.
+                </p>
+</article>
+<!-- Entry 05 -->
+<article class="group transmission-hover cursor-pointer">
+<div class="flex flex-col md:flex-row md:items-baseline justify-between gap-2 mb-2">
+<div class="flex items-center gap-4">
+<div class="hover-line w-0 h-[1px] bg-secondary opacity-0 transition-all duration-500 ease-out"></div>
+<h2 class="font-headline text-2xl md:text-3xl text-on-surface group-hover:text-secondary transition-colors duration-300 font-medium">
+                            The Minimalist Stack
+                        </h2>
+</div>
+<time class="font-label text-[10px] tracking-widest text-on-surface-variant uppercase whitespace-nowrap">Aug 2024</time>
+</div>
+<p class="font-body text-on-surface-variant/80 text-sm max-w-xl leading-relaxed">
+                    Stripping away the layers of abstraction to build hyper-performant interfaces for the next decade.
+                </p>
+</article>
+</section>
+<!-- Pagination / Load More -->
+<footer class="mt-32 flex justify-center">
+<button class="font-headline text-xs tracking-[0.4em] uppercase text-on-surface-variant hover:text-secondary transition-all duration-300 flex items-center gap-2">
+                Scan Previous Records
+                <span class="material-symbols-outlined text-sm">keyboard_double_arrow_down</span>
+</button>
+</footer>
+</main>
+<!-- Footer Component -->
+<footer class="w-full py-12 bg-transparent no-border flex flex-col md:flex-row justify-between items-center px-12 gap-4">
+<div class="text-[#dae2fd]/40 font-['Manrope'] text-[10px] tracking-widest uppercase">
+            © 2024 Celestial Minimalist
+        </div>
+<div class="flex gap-8">
+<a class="text-[#dae2fd]/40 hover:text-[#dae2fd] transition-all font-['Manrope'] text-[10px] tracking-widest uppercase opacity-80 hover:opacity-100" href="#">Github</a>
+<a class="text-[#dae2fd]/40 hover:text-[#dae2fd] transition-all font-['Manrope'] text-[10px] tracking-widest uppercase opacity-80 hover:opacity-100" href="#">Source</a>
+<a class="text-[#dae2fd]/40 hover:text-[#dae2fd] transition-all font-['Manrope'] text-[10px] tracking-widest uppercase opacity-80 hover:opacity-100" href="#">Contact</a>
+</div>
+</footer>
+<!-- Background Subtle Glows (Non-image decorative elements) -->
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
+<div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-secondary/5 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-[-5%] left-[5%] w-[40%] h-[40%] bg-tertiary/5 blur-[100px] rounded-full"></div>
+</div>
+</body></html>
