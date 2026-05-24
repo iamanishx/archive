@@ -122,11 +122,12 @@
         .breadcrumbs {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
+            font-size: 15px;
             color: #64748b;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
         }
 
         .breadcrumbs a {
@@ -625,10 +626,8 @@
                         <span class="current" id="breadcrumb-post">filename.md</span>
                     </div>
 
-                    <h1 class="post-title" id="post-title"></h1>
-
                     <!-- Dynamic Tag badges injected here -->
-                    <div id="post-badges" style="margin-bottom: 20px; display: flex; gap: 8px; flex-wrap: wrap;"></div>
+                    <div id="post-badges" style="margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap;"></div>
 
                     <div class="post-meta" id="post-meta">
                         <span id="post-date"></span>
