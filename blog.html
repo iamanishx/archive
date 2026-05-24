@@ -678,7 +678,6 @@
             const loading = document.getElementById("post-loading");
             const header = document.getElementById("post-header");
             const content = document.getElementById("post-content");
-            const titleEl = document.getElementById("post-title");
             const dateEl = document.getElementById("post-date");
             const timeEl = document.getElementById("post-reading-time");
             const tocSidebar = document.getElementById("toc-sidebar");
@@ -732,48 +731,67 @@
                 return;
             }
 
-            // Custom Markdown code blocks parsing layout setup
-            // Overrides marked default rendering of code blocks to include our wrapper + headers + copy button
-            const renderer = new marked.Renderer();
-            renderer.code = function (code, language) {
-                const lang = language || 'code';
-                // HTML-escape the raw code for inserting inside code blocks
-                const escapedCode = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                
-                return `
-                    <div class="code-block-wrapper">
-                        <div class="code-header">
-                            <span class="code-lang">${lang}</span>
-                            <button class="copy-btn" onclick="copyCode(this)">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="copy-icon">
-                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                </svg>
-                                <span>Copy</span>
-                            </button>
+            // Custom renderer using marked v9 token-based API
+            const renderer = {
+                code(token) {
+                    const lang = token.lang || 'code';
+                    const text = token.text || '';
+                    // HTML-escape the raw code for inserting inside code blocks
+                    const escapedCode = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    
+                    return `
+                        <div class="code-block-wrapper">
+                            <div class="code-header">
+                                <span class="code-lang">${lang}</span>
+                                <button class="copy-btn" onclick="copyCode(this)">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="copy-icon">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                    <span>Copy</span>
+                                </button>
+                            </div>
+                            <pre><code class="language-${lang}">${escapedCode}</code></pre>
                         </div>
-                        <pre><code class="language-${lang}">${escapedCode}</code></pre>
-                    </div>
-                `;
+                    `;
+                },
+                // Custom table wrapper so tables never cause screen overflows
+                table(token) {
+                    const header = token.header || [];
+                    const rows = token.rows || [];
+                    
+                    let headerHTML = '<tr>';
+                    header.forEach(cell => {
+                        const cellText = cell.tokens ? this.parser.parseInline(cell.tokens) : cell.text || '';
+                        headerHTML += `<th>${cellText}</th>`;
+                    });
+                    headerHTML += '</tr>';
+                    
+                    let bodyHTML = '';
+                    rows.forEach(row => {
+                        bodyHTML += '<tr>';
+                        row.forEach(cell => {
+                            const cellText = cell.tokens ? this.parser.parseInline(cell.tokens) : cell.text || '';
+                            bodyHTML += `<td>${cellText}</td>`;
+                        });
+                        bodyHTML += '</tr>';
+                    });
+                    
+                    return `
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>${headerHTML}</thead>
+                                <tbody>${bodyHTML}</tbody>
+                            </table>
+                        </div>
+                    `;
+                }
             };
 
-            // Custom table container wrapper rendering so tables never cause screen overflows
-            renderer.table = function (headerHTML, bodyHTML) {
-                return `
-                    <div class="table-wrapper">
-                        <table>
-                            <thead>${headerHTML}</thead>
-                            <tbody>${bodyHTML}</tbody>
-                        </table>
-                    </div>
-                `;
-            };
-
-            marked.setOptions({
+            marked.use({
                 renderer: renderer,
                 gfm: true,
-                breaks: true,
-                sanitize: false // DOMPurify handles sanitization securely below
+                breaks: true
             });
 
             // Fetch Raw Markdown File
@@ -812,7 +830,6 @@
                     const safeHTML = DOMPurify.sanitize(rawHTML);
 
                     // Insert Content into Page
-                    titleEl.textContent = metadata.title;
                     document.title = `${metadata.title} - Manish Biswal`;
                     
                     // Dynamically resolve absolute back button URL to prevent relative path compounding
