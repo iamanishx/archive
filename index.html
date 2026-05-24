@@ -144,8 +144,9 @@
         }
 
         .footer-links {
-            margin-top: auto;
-            padding-top: 32px;
+            position: absolute;
+            bottom: 32px;
+            left: 32px;
             display: flex;
             gap: 16px;
             font-size: 14px;
@@ -207,8 +208,11 @@
             }
 
             .footer-links {
-                margin-top: auto;
-                padding-top: 24px;
+                position: relative;
+                bottom: auto;
+                left: auto;
+                margin-top: 48px;
+                padding-bottom: 24px;
                 gap: 12px;
                 font-size: 14px;
             }
@@ -526,7 +530,7 @@
 
             function projectBase() {
                 const segs = location.pathname.split("/").filter(Boolean);
-                if (segs.length > 0 && !segs[0].includes(".") && segs[0] !== "blogs") return "/" + segs[0];
+                if (segs.length > 0 && segs[0] !== "blogs") return "/" + segs[0];
                 return "";
             }
 
