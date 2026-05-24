@@ -29,7 +29,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Courier New', Courier, monospace;
             background-color: #0b0d13; /* Premium obsidian-matte dark slate */
             color: #cbd5e1; /* soft off-white slate color for reduced eye strain */
             line-height: 1.75;
@@ -86,7 +86,7 @@
             color: #94a3b8;
             text-decoration: none;
             font-size: 14px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Courier New', Courier, monospace;
             padding: 8px 16px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -115,7 +115,7 @@
         .reader-pane {
             flex: 1;
             max-width: 720px; /* Golden standard width for typographic reading comfort */
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Courier New', Courier, monospace;
         }
 
         /* Tech Breadcrumbs */
@@ -123,7 +123,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Courier New', Courier, monospace;
             font-size: 15px;
             color: #64748b;
             margin-bottom: 8px;
@@ -154,7 +154,7 @@
         /* Tag Badges */
         .badge {
             display: inline-block;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Courier New', Courier, monospace;
             font-size: 11px;
             color: #ff66cc;
             background: rgba(255, 102, 204, 0.04);
@@ -172,8 +172,8 @@
         }
 
         .post-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.75rem; /* Sleeker, cleaner title size */
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.5rem; /* Sleeker, cleaner title size */
             font-weight: 700;
             color: #ffffff;
             line-height: 1.3;
@@ -187,7 +187,7 @@
             gap: 16px;
             font-size: 14px;
             color: #94a3b8;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Courier New', Courier, monospace;
             align-items: center;
         }
 
@@ -227,7 +227,7 @@
             letter-spacing: 0.1em;
             color: #fff;
             margin-bottom: 16px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Courier New', Courier, monospace;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -250,7 +250,7 @@
             line-height: 1.5;
             border-left: 2px solid transparent;
             padding-left: 12px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Courier New', Courier, monospace;
             font-size: 13px;
         }
 
@@ -279,14 +279,13 @@
             border-radius: 8px;
         }
 
-        /* Markdown Prose Styling - State-of-the-Art Typography */
         .prose {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Courier New', Courier, monospace;
             font-size: 15px;
         }
 
         .prose h1, .prose h2, .prose h3, .prose h4 {
-            font-family: 'JetBrains Mono', monospace !important;
+            font-family: 'Courier New', Courier, monospace !important;
             color: #ffffff;
             font-weight: 600;
             letter-spacing: -0.01em;
@@ -296,24 +295,24 @@
         }
 
         .prose h1 {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
         }
 
         .prose h2 {
-            font-size: 1.3rem;
+            font-size: 1.15rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             padding-bottom: 8px;
             margin-top: 2.25rem;
         }
 
         .prose h3 {
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             margin-top: 1.75rem;
         }
 
         .prose h4 {
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             margin-top: 1.5rem;
         }
 
@@ -626,6 +625,8 @@
                         <span class="current" id="breadcrumb-post">filename.md</span>
                     </div>
 
+                    <h1 class="post-title" id="post-title"></h1>
+
                     <!-- Dynamic Tag badges injected here -->
                     <div id="post-badges" style="margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap;"></div>
 
@@ -678,6 +679,7 @@
             const loading = document.getElementById("post-loading");
             const header = document.getElementById("post-header");
             const content = document.getElementById("post-content");
+            const titleEl = document.getElementById("post-title");
             const dateEl = document.getElementById("post-date");
             const timeEl = document.getElementById("post-reading-time");
             const tocSidebar = document.getElementById("toc-sidebar");
@@ -731,13 +733,12 @@
                 return;
             }
 
-            // Custom renderer using marked v9 token-based API
+            // Custom renderer with positional arguments (compatible with marked v9.x)
             const renderer = {
-                code(token) {
-                    const lang = token.lang || 'code';
-                    const text = token.text || '';
+                code(code, infostring) {
+                    const lang = infostring || 'code';
                     // HTML-escape the raw code for inserting inside code blocks
-                    const escapedCode = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    const escapedCode = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
                     
                     return `
                         <div class="code-block-wrapper">
@@ -755,28 +756,7 @@
                         </div>
                     `;
                 },
-                // Custom table wrapper so tables never cause screen overflows
-                table(token) {
-                    const header = token.header || [];
-                    const rows = token.rows || [];
-                    
-                    let headerHTML = '<tr>';
-                    header.forEach(cell => {
-                        const cellText = cell.tokens ? this.parser.parseInline(cell.tokens) : cell.text || '';
-                        headerHTML += `<th>${cellText}</th>`;
-                    });
-                    headerHTML += '</tr>';
-                    
-                    let bodyHTML = '';
-                    rows.forEach(row => {
-                        bodyHTML += '<tr>';
-                        row.forEach(cell => {
-                            const cellText = cell.tokens ? this.parser.parseInline(cell.tokens) : cell.text || '';
-                            bodyHTML += `<td>${cellText}</td>`;
-                        });
-                        bodyHTML += '</tr>';
-                    });
-                    
+                table(headerHTML, bodyHTML) {
                     return `
                         <div class="table-wrapper">
                             <table>
@@ -830,6 +810,7 @@
                     const safeHTML = DOMPurify.sanitize(rawHTML);
 
                     // Insert Content into Page
+                    if (titleEl) titleEl.textContent = metadata.title;
                     document.title = `${metadata.title} - Manish Biswal`;
                     
                     // Dynamically resolve absolute back button URL to prevent relative path compounding
