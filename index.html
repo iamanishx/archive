@@ -144,9 +144,8 @@
         }
 
         .footer-links {
-            position: absolute;
-            bottom: 32px;
-            left: 32px;
+            margin-top: auto;
+            padding-top: 32px;
             display: flex;
             gap: 16px;
             font-size: 14px;
@@ -208,8 +207,8 @@
             }
 
             .footer-links {
-                bottom: 24px;
-                left: 24px;
+                margin-top: auto;
+                padding-top: 24px;
                 gap: 12px;
                 font-size: 14px;
             }
@@ -536,7 +535,7 @@
                 .then((list) => {
                     const base = projectBase();
                     const items = (Array.isArray(list) ? list : []).filter(
-                        (x) => x.type === "file" && /\.html?$/i.test(x.name)
+                        (x) => x.type === "file" && /\.(html?|md)$/i.test(x.name)
                     );
                     ul.innerHTML = "";
                     if (items.length === 0) {
@@ -546,7 +545,12 @@
                     for (const itm of items) {
                         const li = document.createElement("li");
                         const a = document.createElement("a");
-                        a.href = `${base}/blogs/${encodeURIComponent(itm.name)}`;
+                        const isMarkdown = /\.md$/i.test(itm.name);
+                        if (isMarkdown) {
+                            a.href = `${base}/blog.html?post=${encodeURIComponent(itm.name)}`;
+                        } else {
+                            a.href = `${base}/blogs/${encodeURIComponent(itm.name)}`;
+                        }
                         a.textContent = titleFromFilename(itm.name);
                         li.appendChild(a);
                         ul.appendChild(li);

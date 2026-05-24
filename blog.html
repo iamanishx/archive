@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post - Manish Biswal</title>
+    
+    <!-- Google Fonts: Inter and JetBrains Mono for optimal typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js Tomorrow Night theme for exquisite syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" integrity="sha512-4pXrjUrj+FpECq8F16qP0GZ0vEqvD8Z7t1s+xX1K6wA9e7O37F15Z22n5H6eJ96+1fE3j0O/mN31t/L/R4L2sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            color: #cbd5e1; /* soft off-white slate color for reduced eye strain */
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            
+            /* Premium ambient background glows */
+            background-image: 
+                radial-gradient(circle at 80% 0%, rgba(97, 218, 251, 0.07), transparent 50%),
+                radial-gradient(circle at 20% 0%, rgba(255, 102, 204, 0.04), transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* Neon-pink reading progress indicator */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #ff66cc, #61dafb);
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(255, 102, 204, 0.5);
+            transition: width 0.1s ease-out;
+        }
+
+        .layout {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 24px 80px 24px;
+            display: flex;
+            gap: 48px;
+            position: relative;
+        }
+
+        /* Floating back button */
+        .back-nav {
+            position: fixed;
+            top: 40px;
+            left: calc((100vw - 1000px) / 2 - 80px);
+            z-index: 100;
+        }
+
+        @media (max-width: 1200px) {
+            .back-nav {
+                position: absolute;
+                top: 20px;
+                left: 24px;
+            }
+            .layout {
+                padding-top: 80px;
+                flex-direction: column;
+                gap: 32px;
+            }
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(8px);
+        }
+
+        .back-button:hover {
+            color: #fff;
+            border-color: #61dafb;
+            background: rgba(97, 218, 251, 0.05);
+            box-shadow: 0 0 15px rgba(97, 218, 251, 0.15);
+            transform: translateX(-4px);
+        }
+
+        .back-button svg {
+            transition: transform 0.25s ease;
+        }
+
+        .back-button:hover svg {
+            transform: translateX(-3px);
+        }
+
+        /* Main reader pane */
+        .reader-pane {
+            flex: 1;
+            max-width: 720px; /* Golden standard width for typographic reading comfort */
+        }
+
+        /* Blog Header */
+        .post-header {
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 32px;
+        }
+
+        .post-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.25;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+
+        .post-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 14px;
+            color: #94a3b8;
+            font-family: 'JetBrains Mono', monospace;
+            align-items: center;
+        }
+
+        .post-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .post-meta .separator {
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Table of Contents sidebar */
+        .toc-sidebar {
+            width: 240px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 40px;
+            height: fit-content;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            backdrop-filter: blur(12px);
+        }
+
+        @media (max-width: 900px) {
+            .toc-sidebar {
+                display: none; /* Hide ToC sidebar on mobile and tablet, we will inject a clean inline box at the top */
+            }
+        }
+
+        .toc-title {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #fff;
+            margin-bottom: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .toc-item a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: block;
+            line-height: 1.4;
+            border-left: 2px solid transparent;
+            padding-left: 8px;
+        }
+
+        .toc-item.level-3 a {
+            padding-left: 20px;
+            font-size: 13px;
+        }
+
+        .toc-item a:hover {
+            color: #61dafb;
+            border-left-color: rgba(97, 218, 251, 0.4);
+        }
+
+        .toc-item.active a {
+            color: #61dafb;
+            border-left-color: #61dafb;
+            font-weight: 500;
+        }
+
+        /* Inline Table of Contents for Mobile */
+        .inline-toc {
+            margin-bottom: 32px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+        }
+
+        /* Markdown Prose Styling - State-of-the-Art Typography */
+        .prose h1, .prose h2, .prose h3, .prose h4 {
+            color: #ffffff;
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .prose h1 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .prose h2 {
+            font-size: 1.6rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 8px;
+            margin-top: 2.5rem;
+        }
+
+        .prose h3 {
+            font-size: 1.25rem;
+            margin-top: 2rem;
+        }
+
+        .prose p {
+            margin-bottom: 1.5rem;
+            font-size: 16px;
+            color: #cbd5e1; /* extremely readable Slate color */
+        }
+
+        .prose strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .prose a {
+            color: #61dafb;
+            text-decoration: none;
+            border-bottom: 1px dashed rgba(97, 218, 251, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .prose a:hover {
+            color: #ffffff;
+            border-bottom-color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Premium styled Lists */
+        .prose ul, .prose ol {
+            margin-bottom: 1.5rem;
+            padding-left: 24px;
+        }
+
+        .prose li {
+            margin-bottom: 8px;
+        }
+
+        .prose ul li {
+            list-style-type: none;
+            position: relative;
+        }
+
+        .prose ul li::before {
+            content: "•";
+            color: #ff66cc;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+            position: absolute;
+        }
+
+        /* Beautiful Code block container styling */
+        .code-block-wrapper {
+            position: relative;
+            margin: 24px 0;
+            background: #0d0d0d;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Code block top header bar */
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .code-lang {
+            text-transform: uppercase;
+            font-weight: 500;
+            color: #94a3b8;
+            letter-spacing: 0.05em;
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .copy-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Code blocks overrides */
+        .prose pre {
+            background: transparent !important;
+            margin: 0 !important;
+            padding: 16px !important;
+            overflow-x: auto;
+            border: none !important;
+            border-radius: 0 !important;
+        }
+
+        .prose pre code {
+            background: transparent !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
+            color: inherit !important;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Inline Code styling */
+        .prose :not(pre) > code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: #ff66cc;
+            background: rgba(255, 102, 204, 0.08);
+            border: 1px solid rgba(255, 102, 204, 0.15);
+            padding: 2px 6px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        /* Exquisite Blockquotes */
+        .prose blockquote {
+            border-left: 4px solid #ff66cc;
+            padding: 12px 24px;
+            margin: 24px 0;
+            background: rgba(255, 102, 204, 0.02);
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            color: #e2e8f0;
+        }
+
+        .prose blockquote p {
+            margin-bottom: 0;
+        }
+
+        /* Horizontal Divider */
+        .prose hr {
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin: 32px 0;
+        }
+
+        /* Premium responsive Markdown tables */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin: 24px 0;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .prose table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .prose th, .prose td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .prose th {
+            background-color: rgba(255, 255, 255, 0.02);
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .prose tr:last-child td {
+            border-bottom: none;
+        }
+
+        .prose tr:hover td {
+            background-color: rgba(255, 255, 255, 0.01);
+        }
+
+        /* Image styling */
+        .prose img {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin: 24px 0;
+        }
+
+        /* Skeletal Loading screen styles */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.02) 25%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.02) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-title {
+            width: 75%;
+            height: 36px;
+            margin-bottom: 24px;
+        }
+
+        .skeleton-meta {
+            width: 40%;
+            height: 18px;
+            margin-bottom: 40px;
+        }
+
+        .skeleton-text {
+            width: 100%;
+            height: 16px;
+            margin-bottom: 12px;
+        }
+
+        .skeleton-text.short {
+            width: 60%;
+        }
+
+        .error-message {
+            text-align: center;
+            padding: 80px 24px;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.01);
+            max-width: 600px;
+            margin: 40px auto;
+        }
+
+        .error-message h2 {
+            color: #fff;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .error-message p {
+            color: #94a3b8;
+            margin-bottom: 24px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Scroll tracking bar -->
+    <div id="progress-bar"></div>
+
+    <div class="layout">
+        
+        <!-- Floating Cyberpunk navigation -->
+        <div class="back-nav">
+            <a href="index.html" class="back-button" id="back-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                archives
+            </a>
+        </div>
+
+        <!-- Central reading layout -->
+        <main class="reader-pane">
+            <article>
+                <!-- Initial loading skeleton state to eliminate visual layout shifts -->
+                <div id="post-loading">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-meta"></div>
+                    <div style="display: flex; flex-direction: column; gap: 16px;">
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text short"></div>
+                        <div style="margin: 32px 0;">
+                            <div class="skeleton skeleton-text" style="height: 200px;"></div>
+                        </div>
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text short"></div>
+                    </div>
+                </div>
+
+                <!-- Actual Post Header (Injected dynamically) -->
+                <header class="post-header" id="post-header" style="display: none;">
+                    <h1 class="post-title" id="post-title"></h1>
+                    <div class="post-meta" id="post-meta">
+                        <span id="post-date"></span>
+                        <span class="separator" id="meta-sep-1">|</span>
+                        <span id="post-reading-time"></span>
+                    </div>
+                </header>
+
+                <!-- Mobile inline Table of Contents container (dynamically injected here if headers exist) -->
+                <div id="mobile-toc-container"></div>
+
+                <!-- Markdown Content (Injected dynamically) -->
+                <div class="prose" id="post-content" style="display: none;"></div>
+            </article>
+        </main>
+
+        <!-- Desktop Sticky sidebar Table of Contents -->
+        <aside class="toc-sidebar" id="toc-sidebar" style="display: none;">
+            <div class="toc-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="4" y1="9" x2="20" y2="9"></line>
+                    <line x1="4" y1="15" x2="20" y2="15"></line>
+                    <line x1="10" y1="3" x2="8" y2="21"></line>
+                    <line x1="16" y1="3" x2="14" y2="21"></line>
+                </svg>
+                On this page
+            </div>
+            <nav>
+                <ul class="toc-list" id="toc-list">
+                    <!-- Dynamic ToC nodes go here -->
+                </ul>
+            </nav>
+        </aside>
+    </div>
+
+    <!-- Libraries: High-performance markdown parser & DOM Sanitizer for secure code execution -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js" integrity="sha512-42171Z74YgKszZpE57Z5K9xQ15b5x189Vj15N0E31aLpS77QjS58WvC5CdfaM7U6l191dZpL6F8h3V1/cE01Zg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.8/purify.min.js" integrity="sha512-5g2478Ukrj27J6xxY0C120hFC1B21z7KSiqyK6mCl70Q54n4U2E1v6278UjA9U1M4/070E2f7/45+2mB2c0Ww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <!-- Prism.js for Dynamic Language Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Prism Autoloader: Instantly support any code block language typed in Markdown (TS, Python, Rust, Go, SQL etc) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-SfbCwgo5t57yv57Cj/iOYQ06gSgVyf52p8Spvy7WY4p0dGZPHLia3z9s/" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        // Main initialization block
+        (function () {
+            const loading = document.getElementById("post-loading");
+            const header = document.getElementById("post-header");
+            const content = document.getElementById("post-content");
+            const titleEl = document.getElementById("post-title");
+            const dateEl = document.getElementById("post-date");
+            const timeEl = document.getElementById("post-reading-time");
+            const tocSidebar = document.getElementById("toc-sidebar");
+            const tocList = document.getElementById("toc-list");
+            const mobileTocContainer = document.getElementById("mobile-toc-container");
+            const progressBar = document.getElementById("progress-bar");
+
+            // Utility functions
+            function getQueryParam(name) {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(name);
+            }
+
+            function titleFromFilename(name) {
+                const base = name.replace(/\.[^.]+$/, "");
+                return base.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+            }
+
+            function estimateReadingTime(text) {
+                const wordsPerMinute = 225; // standard reader rate
+                const noOfWords = text.split(/\s+/).length;
+                const minutes = Math.ceil(noOfWords / wordsPerMinute);
+                return `${minutes} min read`;
+            }
+
+            function getRelativePath(name) {
+                // Ensure correctly routing the raw blog content inside the blogs folder
+                return `blogs/${name}`;
+            }
+
+            // Error display utility
+            function showError(errTitle, errMsg) {
+                if (loading) loading.style.display = "none";
+                if (header) header.style.display = "none";
+                if (content) content.style.display = "none";
+                
+                const errorDiv = document.createElement("div");
+                errorDiv.className = "error-message";
+                errorDiv.innerHTML = `
+                    <h2>${errTitle}</h2>
+                    <p>${errMsg}</p>
+                    <a href="index.html" class="back-button" style="display:inline-flex;">Return to Archives</a>
+                `;
+                document.querySelector(".reader-pane").appendChild(errorDiv);
+            }
+
+            // Check post parameter
+            const postFile = getQueryParam("post");
+            if (!postFile) {
+                showError("No Blog Specified", "You seem to have loaded this page without clicking a valid blog post from the archives.");
+                return;
+            }
+
+            // Custom Markdown code blocks parsing layout setup
+            // Overrides marked default rendering of code blocks to include our wrapper + headers + copy button
+            const renderer = new marked.Renderer();
+            renderer.code = function (code, language) {
+                const lang = language || 'code';
+                // HTML-escape the raw code for inserting inside code blocks
+                const escapedCode = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                
+                return `
+                    <div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span class="code-lang">${lang}</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="copy-icon">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                <span>Copy</span>
+                            </button>
+                        </div>
+                        <pre><code class="language-${lang}">${escapedCode}</code></pre>
+                    </div>
+                `;
+            };
+
+            // Custom table container wrapper rendering so tables never cause screen overflows
+            renderer.table = function (headerHTML, bodyHTML) {
+                return `
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>${headerHTML}</thead>
+                            <tbody>${bodyHTML}</tbody>
+                        </table>
+                    </div>
+                `;
+            };
+
+            marked.setOptions({
+                renderer: renderer,
+                gfm: true,
+                breaks: true,
+                sanitize: false // DOMPurify handles sanitization securely below
+            });
+
+            // Fetch Raw Markdown File
+            const blogUrl = getRelativePath(postFile);
+            fetch(blogUrl)
+                .then((res) => {
+                    if (!res.ok) {
+                        throw new Error(`Failed to load file. Status: ${res.status}`);
+                    }
+                    return res.text();
+                })
+                .then((rawText) => {
+                    // Frontmatter Parsing (e.g. metadata surrounded by "---" flags)
+                    let parsedContent = rawText;
+                    let metadata = {
+                        title: titleFromFilename(postFile),
+                        date: ""
+                    };
+
+                    const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n/;
+                    const match = rawText.match(frontmatterRegex);
+                    if (match) {
+                        parsedContent = rawText.replace(frontmatterRegex, "");
+                        const lines = match[1].split("\n");
+                        lines.forEach((line) => {
+                            const [key, ...values] = line.split(":");
+                            if (key && values.length > 0) {
+                                const val = values.join(":").trim().replace(/^["']|["']$/g, "");
+                                metadata[key.trim().toLowerCase()] = val;
+                            }
+                        });
+                    }
+
+                    // Render Markdown to HTML
+                    const rawHTML = marked.parse(parsedContent);
+                    const safeHTML = DOMPurify.sanitize(rawHTML);
+
+                    // Insert Content into Page
+                    titleEl.textContent = metadata.title;
+                    document.title = `${metadata.title} - Manish Biswal`;
+                    
+                    if (metadata.date) {
+                        dateEl.textContent = `📅 ${metadata.date}`;
+                        dateEl.style.display = "inline";
+                    } else {
+                        dateEl.style.display = "none";
+                        document.getElementById("meta-sep-1").style.display = "none";
+                    }
+
+                    timeEl.textContent = `⏱️ ${estimateReadingTime(parsedContent)}`;
+
+                    content.innerHTML = safeHTML;
+
+                    // Load Syntax Highlighting with Prism.js
+                    Prism.highlightAllUnder(content);
+
+                    // Auto Table of Contents Generation
+                    generateTableOfContents(content);
+
+                    // Transition loaded states
+                    loading.style.display = "none";
+                    header.style.display = "block";
+                    content.style.display = "block";
+
+                    // Initialize Scroll Progress bar listening
+                    initScrollProgress();
+                })
+                .catch((error) => {
+                    console.error("Error loading markdown:", error);
+                    showError(
+                        "Unable to Load Post", 
+                        `We couldn't fetch the markdown file <code>${postFile}</code>. Make sure the file exists and is uploaded correctly in your <code>blogs</code> folder.`
+                    );
+                });
+
+            // Table of Contents generator
+            function generateTableOfContents(container) {
+                // Find all h2 and h3 elements inside rendered markdown
+                const headers = container.querySelectorAll("h2, h3");
+                if (headers.length === 0) {
+                    return; // No ToC needed
+                }
+
+                const listFragment = document.createDocumentFragment();
+                const inlineFragment = document.createDocumentFragment();
+
+                // Create inline structure for mobile
+                const inlineTocDiv = document.createElement("div");
+                inlineTocDiv.className = "inline-toc";
+                
+                const inlineTocTitle = document.createElement("div");
+                inlineTocTitle.className = "toc-title";
+                inlineTocTitle.innerHTML = `
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="4" y1="9" x2="20" y2="9"></line>
+                        <line x1="4" y1="15" x2="20" y2="15"></line>
+                        <line x1="10" y1="3" x2="8" y2="21"></line>
+                        <line x1="16" y1="3" x2="14" y2="21"></line>
+                    </svg>
+                    Table of Contents
+                `;
+                inlineTocDiv.appendChild(inlineTocTitle);
+
+                const inlineTocUl = document.createElement("ul");
+                inlineTocUl.className = "toc-list";
+
+                headers.forEach((header, index) => {
+                    // Create robust anchor IDs for linking
+                    const anchorId = `toc-anchor-${index}`;
+                    header.id = anchorId;
+
+                    const headerText = header.textContent;
+                    const isH3 = header.tagName.toLowerCase() === "h3";
+
+                    // 1. Sidebar Node
+                    const li = document.createElement("li");
+                    li.className = `toc-item ${isH3 ? "level-3" : "level-2"}`;
+                    li.dataset.targetId = anchorId;
+                    
+                    const a = document.createElement("a");
+                    a.href = `#${anchorId}`;
+                    a.textContent = headerText;
+                    
+                    // Smooth scrolling trigger
+                    a.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        header.scrollIntoView({ behavior: "smooth", block: "start" });
+                        history.pushState(null, null, `#${anchorId}`);
+                    });
+
+                    li.appendChild(a);
+                    listFragment.appendChild(li);
+
+                    // 2. Mobile Inline Node
+                    const inlineLi = li.cloneNode(true);
+                    // cloning elements breaks attached event listeners, reattach scroll behaviors
+                    inlineLi.querySelector("a").addEventListener("click", (e) => {
+                        e.preventDefault();
+                        header.scrollIntoView({ behavior: "smooth", block: "start" });
+                        history.pushState(null, null, `#${anchorId}`);
+                    });
+                    inlineTocUl.appendChild(inlineLi);
+                });
+
+                // Inject Desktop sidebar
+                tocList.appendChild(listFragment);
+                tocSidebar.style.display = "block";
+
+                // Inject Mobile outline
+                inlineTocDiv.appendChild(inlineTocUl);
+                mobileTocContainer.appendChild(inlineTocDiv);
+
+                // Setup Table of Contents ScrollSpy to highlight active heading on scroll
+                initScrollSpy(headers);
+            }
+
+            // ScrollSpy tracker for Table of Contents sidebar
+            function initScrollSpy(headers) {
+                const tocItems = document.querySelectorAll(".toc-sidebar .toc-item");
+                
+                function updateActiveToC() {
+                    const scrollPosition = window.scrollY + 100; // offset for triggers
+
+                    let activeId = "";
+                    for (let i = 0; i < headers.length; i++) {
+                        const header = headers[i];
+                        if (header.offsetTop <= scrollPosition) {
+                            activeId = header.id;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    tocItems.forEach((item) => {
+                        if (item.dataset.targetId === activeId) {
+                            item.classList.add("active");
+                        } else {
+                            item.classList.remove("active");
+                        }
+                    });
+                }
+
+                window.addEventListener("scroll", updateActiveToC);
+                updateActiveToC(); // initial trigger
+            }
+
+            // Reading scroll progress tracker bar trigger
+            function initScrollProgress() {
+                function updateProgress() {
+                    const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+                    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+                    progressBar.style.width = scrolled + "%";
+                }
+
+                window.addEventListener("scroll", updateProgress);
+                updateProgress();
+            }
+        })();
+
+        // Clipboard Copy Utility block (Global context so onclick hooks find it instantly)
+        function copyCode(button) {
+            const pre = button.parentElement.nextElementSibling;
+            const code = pre.querySelector("code");
+            const textToCopy = code.innerText;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const label = button.querySelector("span");
+                const originalText = label.textContent;
+                
+                // Show copied success micro-state
+                label.textContent = "Copied!";
+                button.style.borderColor = "#61dafb";
+                button.style.color = "#61dafb";
+
+                setTimeout(() => {
+                    label.textContent = originalText;
+                    button.style.borderColor = "";
+                    button.style.color = "";
+                }, 2000);
+            }).catch((err) => {
+                console.error("Clipboard copy failed:", err);
+            });
+        }
+    </script>
+</body>
+</html>
