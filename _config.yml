@@ -1,3 +1,5 @@
 title: My Portfolio
 # Keep default GitHub Pages settings; no plugins required for this setup
 # permalink: pretty
+include:
+  - "blogs/*.md"
