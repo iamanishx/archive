@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        (function() {
+            if (location.pathname.includes("index.html/")) {
+                const cleanPath = location.pathname.replace("index.html/", "");
+                location.replace(location.origin + cleanPath + location.search + location.hash);
+            }
+        })();
+    </script>
     <title>Archives - Manish Biswal</title>
     <style>
         * {
