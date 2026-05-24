@@ -526,7 +526,7 @@
 
             function projectBase() {
                 const segs = location.pathname.split("/").filter(Boolean);
-                if (segs.length > 0 && segs[0] !== "blogs") return "/" + segs[0];
+                if (segs.length > 0 && !segs[0].includes(".") && segs[0] !== "blogs") return "/" + segs[0];
                 return "";
             }
 
