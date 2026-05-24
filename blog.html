@@ -58,22 +58,14 @@
             position: relative;
         }
 
-        /* Floating back button */
+        /* Back button navigation spacing */
         .back-nav {
-            position: fixed;
-            top: 40px;
-            left: calc((100vw - 1000px) / 2 - 80px);
-            z-index: 100;
+            margin-bottom: 32px;
         }
 
         @media (max-width: 1200px) {
-            .back-nav {
-                position: absolute;
-                top: 20px;
-                left: 24px;
-            }
             .layout {
-                padding-top: 80px;
+                padding-top: 40px;
                 flex-direction: column;
                 gap: 32px;
             }
@@ -523,20 +515,19 @@
     <div id="progress-bar"></div>
 
     <div class="layout">
-        
-        <!-- Floating Cyberpunk navigation -->
-        <div class="back-nav">
-            <a href="index.html" class="back-button" id="back-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                    <polyline points="12 19 5 12 12 5"></polyline>
-                </svg>
-                archives
-            </a>
-        </div>
-
         <!-- Central reading layout -->
         <main class="reader-pane">
+            <!-- Back navigation in flow -->
+            <div class="back-nav">
+                <a href="index.html" class="back-button" id="back-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    archives
+                </a>
+            </div>
+
             <article>
                 <!-- Initial loading skeleton state to eliminate visual layout shifts -->
                 <div id="post-loading">
