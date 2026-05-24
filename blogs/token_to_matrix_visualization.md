@@ -4,7 +4,7 @@ date: "2026-05-24"
 tags: ["transformers", "llm", "deep-learning"]
 ---
 
-This guide provides a visual explanation of how individual text prompts are tokenized, transformed into dense mathematical matrices, padded for static batching, and routed inside a Transformer model.
+This explanation of how individual text prompts are tokenized, transformed into dense mathematical matrices, padded for static batching, and routed inside a Transformer model.
 
 ---
 
