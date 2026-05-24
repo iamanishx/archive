@@ -115,6 +115,7 @@
         .reader-pane {
             flex: 1;
             max-width: 720px; /* Golden standard width for typographic reading comfort */
+            font-family: 'JetBrains Mono', monospace;
         }
 
         /* Tech Breadcrumbs */
@@ -170,11 +171,12 @@
         }
 
         .post-title {
-            font-size: 2.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.75rem; /* Sleeker, cleaner title size */
             font-weight: 700;
             color: #ffffff;
-            line-height: 1.25;
-            letter-spacing: -0.02em;
+            line-height: 1.3;
+            letter-spacing: -0.015em;
             margin-bottom: 16px;
         }
 
@@ -283,29 +285,35 @@
         }
 
         .prose h1, .prose h2, .prose h3, .prose h4 {
+            font-family: 'JetBrains Mono', monospace !important;
             color: #ffffff;
             font-weight: 600;
-            letter-spacing: -0.015em;
-            margin-top: 2rem;
+            letter-spacing: -0.01em;
+            margin-top: 2.25rem;
             margin-bottom: 1rem;
-            line-height: 1.3;
+            line-height: 1.4;
         }
 
         .prose h1 {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
         }
 
         .prose h2 {
-            font-size: 1.6rem;
+            font-size: 1.3rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             padding-bottom: 8px;
-            margin-top: 2.5rem;
+            margin-top: 2.25rem;
         }
 
         .prose h3 {
-            font-size: 1.25rem;
-            margin-top: 2rem;
+            font-size: 1.15rem;
+            margin-top: 1.75rem;
+        }
+
+        .prose h4 {
+            font-size: 1.05rem;
+            margin-top: 1.5rem;
         }
 
         .prose p {
