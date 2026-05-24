@@ -30,7 +30,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #000000;
+            background-color: #0b0d13; /* Premium obsidian-matte dark slate */
             color: #cbd5e1; /* soft off-white slate color for reduced eye strain */
             line-height: 1.75;
             -webkit-font-smoothing: antialiased;
@@ -39,8 +39,8 @@
             
             /* Premium ambient background glows */
             background-image: 
-                radial-gradient(circle at 80% 0%, rgba(97, 218, 251, 0.07), transparent 50%),
-                radial-gradient(circle at 20% 0%, rgba(255, 102, 204, 0.04), transparent 50%);
+                radial-gradient(circle at 80% 0%, rgba(97, 218, 251, 0.05), transparent 50%),
+                radial-gradient(circle at 20% 0%, rgba(255, 102, 204, 0.03), transparent 50%);
             background-attachment: fixed;
         }
 
@@ -117,6 +117,51 @@
             max-width: 720px; /* Golden standard width for typographic reading comfort */
         }
 
+        /* Tech Breadcrumbs */
+        .breadcrumbs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 16px;
+        }
+
+        .breadcrumbs a {
+            color: #64748b;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .breadcrumbs a:hover {
+            color: #61dafb;
+        }
+
+        .breadcrumbs .sep {
+            color: rgba(255, 255, 255, 0.12);
+        }
+
+        .breadcrumbs .current {
+            color: #94a3b8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Tag Badges */
+        .badge {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: #ff66cc;
+            background: rgba(255, 102, 204, 0.04);
+            border: 1px solid rgba(255, 102, 204, 0.12);
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: lowercase;
+        }
+
         /* Blog Header */
         .post-header {
             margin-bottom: 40px;
@@ -160,11 +205,10 @@
             position: sticky;
             top: 40px;
             height: fit-content;
-            padding: 16px;
-            background: rgba(255, 255, 255, 0.01);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: 12px;
-            backdrop-filter: blur(12px);
+            padding: 16px 8px;
+            background: transparent;
+            border: none;
+            backdrop-filter: none;
         }
 
         @media (max-width: 900px) {
@@ -196,23 +240,25 @@
         }
 
         .toc-item a {
-            color: #94a3b8;
+            color: #64748b;
             text-decoration: none;
             transition: all 0.2s ease;
             display: block;
-            line-height: 1.4;
+            line-height: 1.5;
             border-left: 2px solid transparent;
-            padding-left: 8px;
+            padding-left: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
         }
 
         .toc-item.level-3 a {
-            padding-left: 20px;
-            font-size: 13px;
+            padding-left: 24px;
+            font-size: 12px;
         }
 
         .toc-item a:hover {
             color: #61dafb;
-            border-left-color: rgba(97, 218, 251, 0.4);
+            border-left-color: rgba(97, 218, 251, 0.3);
         }
 
         .toc-item.active a {
@@ -557,7 +603,20 @@
 
                 <!-- Actual Post Header (Injected dynamically) -->
                 <header class="post-header" id="post-header" style="display: none;">
+                    <!-- Sleek custom breadcrumbs path -->
+                    <div class="breadcrumbs">
+                        <a href="index.html">archives</a>
+                        <span class="sep">/</span>
+                        <a href="index.html">blogs</a>
+                        <span class="sep">/</span>
+                        <span class="current" id="breadcrumb-post">filename.md</span>
+                    </div>
+
                     <h1 class="post-title" id="post-title"></h1>
+
+                    <!-- Dynamic Tag badges injected here -->
+                    <div id="post-badges" style="margin-bottom: 20px; display: flex; gap: 8px; flex-wrap: wrap;"></div>
+
                     <div class="post-meta" id="post-meta">
                         <span id="post-date"></span>
                         <span class="separator" id="meta-sep-1">|</span>
@@ -743,6 +802,38 @@
                     // Insert Content into Page
                     titleEl.textContent = metadata.title;
                     document.title = `${metadata.title} - Manish Biswal`;
+                    
+                    // Inject Breadcrumb details
+                    document.getElementById("breadcrumb-post").textContent = postFile.toLowerCase();
+
+                    // Parse & Inject Badges dynamically
+                    const badgesContainer = document.getElementById("post-badges");
+                    if (badgesContainer) {
+                        badgesContainer.innerHTML = "";
+                        if (metadata.tags) {
+                            try {
+                                const tagsArray = JSON.parse(metadata.tags.replace(/'/g, '"'));
+                                if (Array.isArray(tagsArray)) {
+                                    tagsArray.forEach(t => {
+                                        const span = document.createElement("span");
+                                        span.className = "badge";
+                                        span.textContent = `[${t.trim()}]`;
+                                        badgesContainer.appendChild(span);
+                                    });
+                                }
+                            } catch (e) {
+                                const tagsArray = metadata.tags.split(",");
+                                tagsArray.forEach(t => {
+                                    if (t.trim()) {
+                                        const span = document.createElement("span");
+                                        span.className = "badge";
+                                        span.textContent = `[${t.trim().toLowerCase()}]`;
+                                        badgesContainer.appendChild(span);
+                                    }
+                                });
+                            }
+                        }
+                    }
                     
                     if (metadata.date) {
                         dateEl.textContent = `📅 ${metadata.date}`;
