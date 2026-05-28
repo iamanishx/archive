@@ -1,3 +1,10 @@
+---
+title: "Deploying Agents on Scale - What Nobody Tells You About Scaling Coding Sandboxes"
+date: "2026-05-29"
+tags: ["ai", "agents", "production"]
+---
+
+
 # Productionizing AI Agents: What Nobody Tells You About Scaling Coding Sandboxes
 
 So I built an autonomous AI coding agent. It clones a repository, checks out a branch, invokes an LLM, writes some tests, runs them, and opens a pull request. It worked beautifully on my laptop.
