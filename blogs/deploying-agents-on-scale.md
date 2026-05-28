@@ -7,15 +7,13 @@ tags: ["ai", "agents", "production"]
 
 # Productionizing AI Agents: What Nobody Tells You About Scaling Coding Sandboxes
 
-So I built an autonomous AI coding agent. It clones a repository, checks out a branch, invokes an LLM, writes some tests, runs them, and opens a pull request. It worked beautifully on my laptop.
+So I am building an autonomous AI coding agent. It clones a repository, checks out a branch, invokes an LLM, writes some tests, runs them, and opens a pull request. It worked beautifully on my laptop.
 
-Then I decided to launch it.
+First i exposed a raw Express webhook, threw a couple of parallel test requests at it, and the server locked up. The Linux Out-of-Memory killer forcefully terminated my Node process, my host filesystem got corrupted by concurrent git lock files, and my gateway threw 504 timeouts. I had to SSH in and restart everything manually.
 
-I exposed a raw Express webhook, threw a couple of parallel test requests at it, and the server locked up. The Linux Out-of-Memory killer forcefully terminated my Node process, my host filesystem got corrupted by concurrent git lock files, and my gateway threw 504 timeouts. I had to SSH in and restart everything manually.
+That experience is what made me actually think about production agent deployments. Because deploying a heavy autonomous coding agent is nothing like deploying a standard API microservice. You are not scaling HTTP requests. You are scaling untrusted operating system workloads, and that requires a completely different mental model.
 
-That experience is what made me actually think about production agent architecture. Because deploying a heavy autonomous coding agent is nothing like deploying a standard API microservice. You are not scaling HTTP requests. You are scaling untrusted operating system workloads, and that requires a completely different mental model.
-
-This is what I learned, and what I would do differently from day one.
+This is what I i have planned, and what I would do differently .
 
 ---
 
@@ -41,35 +39,13 @@ To handle 100 or more concurrent agent jobs without the system falling apart, yo
 
 Here is the system design that I arrived at:
 
-```mermaid
-graph TD
-    Webhook[Webhook / API Request] -->|1. Validate and acknowledge| Express[Express API Gateway]
-    Express -->|2. Write job metadata to disk| Disk[(JSONL and JSON Files on Disk)]
-    Express -->|3. Push task to queue| Redis[(Redis Queue State)]
-
-    subgraph "Queue and Scheduling Layer"
-        Redis <-->|4. Throttled dequeue| BullMQ[BullMQ Workers]
-    end
-
-    subgraph "Ephemeral Execution Cluster"
-        BullMQ -->|5. Provision sandbox| K8sAPI[Kubernetes API Server]
-        K8sAPI -->|6. Start isolated runner| Pod1[Sandbox Pod 1]
-        K8sAPI -->|6. Start isolated runner| PodN[Sandbox Pod N]
-    end
-
-    subgraph "Inside Each Sandbox Pod"
-        Pod1 -->|7. Clone repo and run agent| Volume[Ephemeral Workspace slash app]
-    end
-
-    Pod1 -->|8. Append logs in real time| Disk
-    Disk <-->|9. Read and stream status| Express
-```
+![Architecture Diagram](../assests/image.png)
 
 The ingestion layer receives the webhook and returns a job ID within milliseconds. The scheduling layer manages concurrency so the cluster never gets overloaded. The execution layer runs each job in a completely isolated container that is destroyed when the work is done. And disk-based logging makes the system observable without burning memory.
 
 ---
 
-## The Three Things You Have to Get Right
+## The Three Things Have to Get Right
 
 ### Asynchronous Job Queuing
 
@@ -125,7 +101,7 @@ If you are running this on a single Hetzner VM with low traffic and all reposito
 
 ## How Autoscaling Ties It Together
 
-The real power of this architecture shows up when you combine the BullMQ queue depth with Kubernetes cluster autoscaling. You configure your cluster to watch the queue length and spin up additional VM nodes when the backlog exceeds a threshold. When the queue drains, the extra nodes are terminated and you stop paying for them.
+Power of this architecture shows up when you combine BullMQ queue depth with Kubernetes cluster autoscaling. You configure your cluster to watch the queue length and spin up additional VM nodes when the backlog exceeds a threshold. When the queue drains, the extra nodes are terminated and you stop paying for them.
 
 This means your infrastructure cost tracks your actual usage almost perfectly. At 3am when nobody is submitting jobs, you are running minimal infrastructure. During a spike, the cluster expands automatically and contracts when the work is done.
 
@@ -138,5 +114,3 @@ Pre-pulling your sandbox container images on each node eliminates the startup pe
 None of this is particularly complicated once you understand why each piece exists. The queue exists because HTTP connections are fragile and agents are slow. The sandbox Pods exist because agent code is untrusted and resource-hungry. The JSONL logging exists because memory is finite and processes crash.
 
 What makes this architecture worth building is that it composes well. You can start with a single VM running K3s and a local Redis instance, which costs almost nothing, and scale it horizontally to a multi-cloud cluster when the user base grows. The application code does not need to change. Only the infrastructure configuration scales up.
-
-That is the version of this system I wish I had built from the beginning instead of discovering it through a series of painful production incidents.
