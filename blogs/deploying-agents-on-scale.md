@@ -7,7 +7,7 @@ tags: ["ai", "agents", "production"]
 
 # Productionizing AI Agents: What Nobody Tells You About Scaling Coding Sandboxes
 
-So I am building an autonomous AI coding agent. It clones a repository, checks out a branch, invokes an LLM, writes some tests, runs them, and opens a pull request. It worked beautifully on my laptop.
+So I am building an autonomous AI coding agent. It clones a repository, checks out a branch, invokes an LLM, writes some tests, runs them, and opens a pull request. It worked beautifully on my machine.
 
 First i exposed a raw Express webhook, threw a couple of parallel test requests at it, and the server locked up. The Linux Out-of-Memory killer forcefully terminated my Node process, my host filesystem got corrupted by concurrent git lock files, and my gateway threw 504 timeouts. I had to SSH in and restart everything manually.
 
