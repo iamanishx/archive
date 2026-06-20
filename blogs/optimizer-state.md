@@ -106,7 +106,7 @@ When scaling up large language models, storing everything in 32-bit floating-poi
 
 This introduces a massive problem called **underflow**.
 
-Because 16-bit floats have limited precision, they cannot represent incredibly small numbers. During an update, the step size ($\eta \times \text{step}$) is often a tiny fraction. When you try to subtract a tiny 16-bit fraction from a 16-bit weight, the precision limit causes that tiny fraction to round down to absolute zero. The weight never changes, and the model stops learning.
+Because 16-bit floats have limited precision, they cannot represent incredibly small numbers. During an update, the step size ( $\eta \times \text{step}$ ) is often a tiny fraction. When you try to subtract a tiny 16-bit fraction from a 16-bit weight, the precision limit causes that tiny fraction to round down to absolute zero. The weight never changes, and the model stops learning.
 
 ### The Solution: The FP32 Master Weight Copy
 
