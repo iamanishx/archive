@@ -12,7 +12,7 @@ To appreciate why modern networks train successfully, we have to look closely at
 
 ---
 
-### 1. Why Vanilla SGD Fails on Modern Landscapes
+### 1. Why Vanilla SGD Fails
 
 In the early days of deep learning, models relied on Vanilla Stochastic Gradient Descent (SGD). It is a purely reactive algorithm. It looks at the slope right under its feet, takes a step down that slope, and immediately forgets everything else.
 
@@ -24,7 +24,7 @@ $$
 
 Where $\theta$ represents the model weights, $\eta$ is the learning rate, and $\nabla_t$ is the gradient (the current slope).
 
-### The Real-World Failure Example: The Ravine Problem
+### Failure Example: The Ravine Problem
 
 Imagine a landscape that looks like a long, narrow canyon. The floor of the canyon slopes very gently toward the exit (the true minimum), but the walls of the canyon are incredibly steep.
 
