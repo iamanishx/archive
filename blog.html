@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" referrerpolicy="no-referrer" />
     
     <!-- KaTeX CSS for LaTeX rendering -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVdqiI7+JKnQ358xm1dODR51b3gUtfg7BHtD931+A1PI8ygtW13gI3tHLvWECZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     
     <style>
         * {
@@ -672,7 +672,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.8/purify.min.js" referrerpolicy="no-referrer"></script>
     
     <!-- KaTeX and marked-katex-extension for LaTeX rendering -->
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyLyltusT931yeic5tzJKXXLt7yaccGj+ckaDW5LuOC361AqJ9OIUupG1RlT9y" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked-katex-extension@5.1.2/lib/index.umd.js"></script>
     
     <!-- Prism.js for Dynamic Language Highlighting -->
@@ -782,9 +782,13 @@
             });
 
             // Register KaTeX extension for rendering math equations
-            marked.use(window.markedKatex({
-                throwOnError: false
-            }));
+            if (typeof window.markedKatex === 'function') {
+                marked.use(window.markedKatex({
+                    throwOnError: false
+                }));
+            } else {
+                console.warn('markedKatex extension not loaded — LaTeX will not render.');
+            }
 
             // Fetch Raw Markdown File
             const blogUrl = getRelativePath(postFile);
